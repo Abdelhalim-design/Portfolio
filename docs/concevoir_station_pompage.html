@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAE S1 - Station de Pompage | Portfolio GEII</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding-top: 80px;
+            line-height: 1.6;
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(15, 32, 39, 0.95), rgba(44, 83, 100, 0.95));
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(0, 191, 255, 0.5);
+            box-shadow: 0 4px 20px rgba(0, 191, 255, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(15, 32, 39, 0.98);
+            box-shadow: 0 6px 30px rgba(0, 191, 255, 0.4);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .nav-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00bfff;
+            text-shadow: 0 0 20px rgba(0, 191, 255, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            color: #00ffff;
+            transform: scale(1.05);
+        }
+
+        .nav-logo::before {
+            content: '⚡';
+            font-size: 1.8rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .nav-menu > li {
+            position: relative;
+        }
+
+        .nav-menu > li > a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.2rem;
+            color: rgba(0, 191, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 8px;
+            background: rgba(0, 191, 255, 0.05);
+            border: 1px solid rgba(0, 191, 255, 0.2);
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+        .nav-menu > li > a:hover,
+        .nav-menu > li > a.active {
+            background: rgba(0, 191, 255, 0.15);
+            color: #00ffff;
+            border-color: rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            background: rgba(15, 32, 39, 0.98);
+            border: 2px solid rgba(0, 191, 255, 0.4);
+            border-radius: 12px;
+            padding: 0.8rem;
+            min-width: 280px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 191, 255, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .nav-menu > li:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-category {
+            color: #00bfff;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 0.5rem 1rem 0.3rem;
+            margin-top: 0.5rem;
+            border-top: 1px solid rgba(0, 191, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dropdown-category:first-child {
+            margin-top: 0;
+            border-top: none;
+        }
+
+        .dropdown-submenu {
+            margin-top: 0.3rem;
+        }
+
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.7rem 1rem 0.7rem 2rem;
+            color: rgba(0, 191, 255, 0.8);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 0.88rem;
+            border-left: 3px solid transparent;
+            margin: 0.2rem 0;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(0, 191, 255, 0.1);
+            color: #00ffff;
+            border-left-color: #00bfff;
+            padding-left: 2.2rem;
+        }
+
+        .dropdown-menu a::before {
+            content: '▸';
+            color: #00bfff;
+            font-size: 1rem;
+            position: absolute;
+            left: 1rem;
+        }
+
+        .has-dropdown > a::after {
+            content: '▾';
+            margin-left: 0.3rem;
+            transition: transform 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .has-dropdown:hover > a::after {
+            transform: rotate(180deg);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 0.5rem;
+            background: rgba(0, 191, 255, 0.1);
+            border: 2px solid rgba(0, 191, 255, 0.3);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger:hover {
+            background: rgba(0, 191, 255, 0.2);
+            border-color: #00bfff;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #00bfff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* ===== HERO TITLE ===== */
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            color: #00bfff;
+            font-size: 2.5rem;
+            text-align: center;
+            border-bottom: 4px solid #00bfff;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(0, 191, 255, 0.8), 0 0 40px rgba(0, 191, 255, 0.4);
+            letter-spacing: 2px;
+            position: relative;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .hero-title::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent 0%, #00ffff 50%, transparent 100%);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+            animation: electricFlow 2s ease-in-out infinite;
+        }
+
+        @keyframes electricFlow {
+            0%, 100% {
+                opacity: 0.6;
+                transform: translateX(-50%) scaleX(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: translateX(-50%) scaleX(1);
+            }
+        }
+
+        /* ===== SECTION TITLES ===== */
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00bfff;
+            font-size: 2rem;
+            margin-top: 50px;
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 5px solid #00bfff;
+            text-shadow: 0 0 10px rgba(0, 191, 255, 0.6);
+            position: relative;
+            animation: fadeInLeft 0.6s ease-out;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, #00bfff, #00ffff);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            animation: blink 1.5s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        h3 {
+            color: #00ffff;
+            font-size: 1.5rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 191, 255, 0.4);
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+        }
+
+        h4 {
+            color: #00bfff;
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+
+        /* ===== INTRO SECTION ===== */
+        .intro-section {
+            background: linear-gradient(135deg, rgba(0, 191, 255, 0.15) 0%, rgba(0, 255, 255, 0.1) 100%);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(0, 191, 255, 0.5);
+            box-shadow: 0 0 30px rgba(0, 191, 255, 0.2), inset 0 0 20px rgba(0, 191, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .intro-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(90deg, transparent 0px, rgba(0, 191, 255, 0.03) 2px, transparent 4px, transparent 40px);
+            pointer-events: none;
+        }
+
+        /* ===== TWO COLUMNS ===== */
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .column-box {
+            background: rgba(0, 191, 255, 0.05);
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 191, 255, 0.3);
+            box-shadow: 0 3px 15px rgba(0, 191, 255, 0.2), inset 0 0 20px rgba(0, 191, 255, 0.03);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .column-box:hover {
+            border-color: rgba(0, 255, 255, 0.5);
+            box-shadow: 0 5px 25px rgba(0, 191, 255, 0.4), inset 0 0 30px rgba(0, 191, 255, 0.05);
+            transform: translateY(-5px);
+        }
+
+        /* ===== TABLES ===== */
+        table {
+            width: 100%;
+            background: rgba(15, 32, 39, 0.6);
+            border: 1px solid rgba(0, 191, 255, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 15px rgba(0, 191, 255, 0.2);
+            margin: 20px 0;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(135deg, rgba(0, 191, 255, 0.3) 0%, rgba(0, 191, 255, 0.2) 100%);
+        }
+
+        th {
+            color: #00ffff;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+            border-bottom: 2px solid rgba(0, 191, 255, 0.5);
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            border-bottom: 1px solid rgba(0, 191, 255, 0.2);
+            color: #b0c4de;
+            padding: 12px;
+        }
+
+        tr:hover {
+            background-color: rgba(0, 191, 255, 0.08);
+        }
+
+        /* ===== IMAGES ===== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 2px solid rgba(0, 191, 255, 0.5);
+            box-shadow: 0 5px 30px rgba(0, 191, 255, 0.4), 0 0 50px rgba(0, 191, 255, 0.2);
+            transition: all 0.3s ease;
+            display: block;
+            margin: 20px auto;
+        }
+
+        img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 40px rgba(0, 191, 255, 0.6), 0 0 60px rgba(0, 191, 255, 0.3);
+        }
+
+        /* ===== IMAGE GRID ===== */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .image-box {
+            text-align: center;
+            background: rgba(0, 191, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 191, 255, 0.3);
+            box-shadow: 0 3px 15px rgba(0, 191, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .image-box:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 255, 255, 0.5);
+            box-shadow: 0 8px 30px rgba(0, 191, 255, 0.4);
+        }
+
+        .image-box strong {
+            display: block;
+            color: #00bfff;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .image-box img {
+            margin: 0 auto;
+        }
+
+        /* ===== COMPONENT CARD ===== */
+        .component-card {
+            background: rgba(0, 191, 255, 0.05);
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #00bfff;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 191, 255, 0.2);
+            border: 1px solid rgba(0, 191, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .component-card:hover {
+            border-left-color: #00ffff;
+            box-shadow: 0 4px 25px rgba(0, 191, 255, 0.4), inset 0 0 15px rgba(0, 191, 255, 0.05);
+            transform: translateX(5px);
+        }
+
+        .component-card strong {
+            color: #00ffff;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* ===== COMMENT BOX ===== */
+        .comment-box {
+            background: rgba(0, 191, 255, 0.1);
+            border-left: 4px solid #00bfff;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 191, 255, 0.2);
+        }
+
+        /* ===== BADGES ===== */
+        .competence-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(0, 191, 255, 0.3), rgba(0, 255, 255, 0.2));
+            color: #00ffff;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid rgba(0, 191, 255, 0.5);
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.6);
+            box-shadow: 0 2px 10px rgba(0, 191, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .competence-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 191, 255, 0.5);
+        }
+
+        .matiere-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.3), rgba(255, 193, 7, 0.2));
+            color: #ffa726;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 152, 0, 0.5);
+            text-shadow: 0 0 5px rgba(255, 152, 0, 0.6);
+            box-shadow: 0 2px 10px rgba(255, 152, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .matiere-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.5);
+        }
+
+        /* ===== BILAN SECTION ===== */
+        .bilan-section {
+            background: linear-gradient(135deg, rgba(0, 191, 255, 0.2) 0%, rgba(0, 255, 255, 0.15) 100%);
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 40px;
+            box-shadow: 0 5px 30px rgba(0, 191, 255, 0.3), inset 0 0 30px rgba(0, 191, 255, 0.05);
+            border: 2px solid rgba(0, 191, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bilan-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(0, 191, 255, 0.1) 0%, transparent 50%);
+            animation: pulseCircuit 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulseCircuit {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* ===== SPECIAL BOX ===== */
+        .special-box {
+            background: rgba(0, 191, 255, 0.08);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #00bfff;
+            box-shadow: 0 3px 15px rgba(0, 191, 255, 0.2);
+        }
+
+        /* ===== HR ===== */
+        hr {
+            border: none;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #00bfff, transparent);
+            box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+            margin: 40px 0;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background: rgba(15, 32, 39, 0.98);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.4s ease;
+                max-height: calc(100vh - 80px);
+                overflow-y: auto;
+            }
+
+            .nav-menu.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .nav-menu > li {
+                width: 100%;
+            }
+
+            .nav-menu > li > a {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                margin-top: 0.5rem;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+
+            .has-dropdown.open .dropdown-menu {
+                max-height: 800px;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 1.8rem;
+                letter-spacing: 1px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 1rem;
+            }
+
+            .nav-logo {
+                font-size: 1.2rem;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                Portfolio GEII
+            </a>
+
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <ul class="nav-menu" id="navMenu">
+                <!-- 🏠 Accueil -->
+                <li class="has-dropdown">
+                    <a href="index.html">🏠 Accueil</a>
+                    <div class="dropdown-menu">
+                        <a href="index.html">À propos de moi</a>
+                        <a href="Somaires.html">Sommaire</a>
+                    </div>
+                </li>
+
+                <!-- 📊 Référentiel -->
+                <li>
+                    <a href="referenciel.html">📊 Référentiel</a>
+                </li>
+
+                <!-- 📚 Projets Académiques -->
+                <li class="has-dropdown">
+                    <a href="#" class="active">📚 Projets Académiques</a>
+                    <div class="dropdown-menu">
+                        <!-- 1ère année -->
+                        <div class="dropdown-category">📌 Semestre 1</div>
+                        <div class="dropdown-submenu">
+                            <a href="Pompe.html">💧 Station de Pompage</a>
+                            <a href="concevoir_station_pompage.html" style="padding-left: 3rem;">→ Concevoir</a>
+                            <a href="verifier_station_pompage.html" style="padding-left: 3rem;">→ Vérifier</a>
+                            
+                            <a href="Robot_suiveur.html">🤖 Robot Suiveur</a>
+                            <a href="concevoir_robot_suiveur.html" style="padding-left: 3rem;">→ Concevoir</a>
+                            <a href="verifier_robot_suiveur.html" style="padding-left: 3rem;">→ Vérifier</a>
+                        </div>
+
+                        <div class="dropdown-category">🏅 Semestre 2</div>
+                        <div class="dropdown-submenu">
+                            <a href="sae_drone.html">🚁 Moteur de Drone</a>
+                            <a href="concevoir_moteur_drone.html" style="padding-left: 3rem;">→ Concevoir</a>
+                            <a href="verifier_moteur_drone.html" style="padding-left: 3rem;">→ Vérifier</a>
+                            
+                            <a href="sae_snake.html">🐍 Snake</a>
+                            <a href="concevoir_sae_snake.html" style="padding-left: 3rem;">→ Concevoir</a>
+                            <a href="verifier_sae_snake.html" style="padding-left: 3rem;">→ Vérifier</a>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- 💼 Expérience Personnelle -->
+                <li class="has-dropdown">
+                    <a href="#">💼 Expérience</a>
+                    <div class="dropdown-menu">
+                        <a href="projet_realiser.html">🏆 Projets Réalisés</a>
+                        <a href="competence_aquise.html">🔧 Compétences Acquises</a>
+                    </div>
+                </li>
+
+                <!-- 📞 Contact -->
+                <li>
+                    <a href="contact.html">📞 Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ===== CONTAINER ===== -->
+    <div class="container">
+        
+        <h1 class="hero-title">📘 Portfolio SAE S1 – Station de Pompage Automatisée</h1>
+
+        <div class="intro-section">
+            <h2>🎯 Introduction</h2>
+            <p>Bienvenue dans mon portfolio portant sur la <strong>SAE S1 : Station de Pompage Automatisée</strong>, réalisée en BUT GEII à l'IUT de Nîmes, en binôme avec Clément Durand.</p>
+            <p>Ce projet consistait à <strong>concevoir un système automatisé de gestion de niveau d'eau</strong> avec deux pompes commandées par un automate, et à en assurer :</p>
+            <ul>
+                <li>La <strong>programmation</strong></li>
+                <li>La <strong>mise en œuvre physique</strong></li>
+                <li>Les <strong>tests fonctionnels</strong></li>
+                <li>Et les <strong>améliorations de sécurité et de fiabilité</strong></li>
+            </ul>
+            <p>Ce projet mobilise des compétences en <strong>électrotechnique, automatisme, programmation et gestion de projet</strong>.</p>
+        </div>
+
+        <img src="images/sae pompe/Station_de_pompe.png" alt="Station de pompage">
+
+        <hr>
+
+        <div class="two-columns">
+            <div class="column-box">
+                <h3>🎓 Objectifs pédagogiques</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Compétence</th>
+                            <th>Description</th>
+                            <th>Apprentissage Critique</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>C1a</strong></td>
+                            <td>Analyser un système automatisé</td>
+                            <td>Identification rigoureuse des fonctions du système</td>
+                        </tr>
+                        <tr>
+                            <td><strong>C1b</strong></td>
+                            <td>Réaliser un prototype matériel et logiciel</td>
+                            <td>Construction de la platine et développement du programme</td>
+                        </tr>
+                        <tr>
+                            <td><strong>C1c</strong></td>
+                            <td>Rédiger un dossier technique</td>
+                            <td>Schémas, nomenclature, devis</td>
+                        </tr>
+                        <tr>
+                            <td><strong>C2a</strong></td>
+                            <td>Tester un système technique</td>
+                            <td>Tests unitaires et globaux</td>
+                        </tr>
+                        <tr>
+                            <td><strong>C2b</strong></td>
+                            <td>Vérifier la conformité au cahier des charges</td>
+                            <td>Validation fonctionnelle</td>
+                        </tr>
+                        <tr>
+                            <td><strong>C2c</strong></td>
+                            <td>Diagnostiquer un dysfonctionnement</td>
+                            <td>Dépannage et sécurisation</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="column-box">
+                <h3>📚 Matières mobilisées</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Matière</th>
+                            <th>Rôle dans le projet</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Électrotechnique</strong></td>
+                            <td>Dimensionnement et sélection des composants</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Automatisme</strong></td>
+                            <td>Conception du GRAFCET, logique séquentielle</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CAO (WinRelais)</strong></td>
+                            <td>Réalisation des schémas électriques</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Informatique industrielle</strong></td>
+                            <td>Programmation Ladder sous Machine Expert</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PPP</strong></td>
+                            <td>Organisation du travail et gestion des ressources</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sécurité électrique</strong></td>
+                            <td>Ajout de dispositifs de protection (relais, arrêt urgence)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <hr>
+
+        <h2>🔧 CONCEVOIR</h2>
+
+        <h3>📊 Analyse fonctionnelle (C1a)</h3>
+        <p>Avant de concevoir le GRAFCET, il était essentiel d'<strong>apprendre à se connecter à l'automate</strong> pour ne pas risquer de le bloquer, ni perturber les autres utilisateurs.</p>
+
+        <h4>🔌 Procédure de connexion à l'automate</h4>
+        <img src="images/sae pompe/_- visual selection.png" alt="Sélection visuelle">
+
+        <hr>
+
+        <div class="image-grid">
+            <div class="image-box">
+                <strong>Automate utilisé</strong>
+                <img src="images/sae pompe/automate utiliser.png" alt="Automate">
+            </div>
+
+            <div class="image-box">
+                <strong>Configuration Machine Expert</strong>
+                <img src="images/sae pompe/config_machin_expertpng.png" alt="Configuration">
+            </div>
+        </div>
+
+        <hr>
+
+        <h3>📈 GRAFCET final du projet</h3>
+        <img src="images/sae pompe/GTAFCET_FINAL.png" alt="GRAFCET final">
+        <p style="text-align: center; font-style: italic; color: #00bfff;"><em>Ce GRAFCET reflète l'enchaînement logique des actions du système (niveau haut, alternance, arrêt d'urgence…).</em></p>
+
+        <hr>
+
+        <h3>⚙️ Réalisation Ladder</h3>
+        <img src="images/sae pompe/Ladder.png" alt="Ladder">
+
+        <div class="comment-box">
+            <p>💬 <strong>Commentaire</strong> : Le Ladder permet d'implémenter directement le GRAFCET dans l'automate selon une logique séquentielle claire.</p>
+        </div>
+
+        <p>
+            <span class="competence-badge">🎯 Compétence C1a</span>
+            <span class="competence-badge">✅ Respect des transitions et états</span>
+            <span class="matiere-badge">📘 Automatisme</span>
+        </p>
+
+        <hr>
+
+        <h3>🔍 Choix des composants (C1b)</h3>
+        <p>Une fois l'analyse fonctionnelle réalisée, nous avons procédé au <strong>choix des composants</strong> nécessaires à la mise en œuvre physique de la station de pompage. Ce choix s'est appuyé sur des <strong>calculs techniques</strong> et sur la <strong>consultation de datasheets</strong>.</p>
+
+        <h4>📐 Calculs techniques réalisés</h4>
+        <ul>
+            <li>Calcul de la <strong>Hauteur Manométrique Totale (HMT)</strong></li>
+            <li>Estimation des <strong>pertes de charge</strong> dans le circuit</li>
+            <li>Détermination de la <strong>puissance nécessaire au moteur</strong></li>
+            <li>Vérification des <strong>intensités admissibles</strong> des composants</li>
+        </ul>
+
+        <div class="image-grid">
+            <div class="image-box">
+                <strong>🔬 Calculs techniques</strong>
+                <img src="images/sae pompe/calcul technique.png" alt="Calculs">
+            </div>
+
+            <div class="image-box">
+                <strong>📐 Critères de choix d'un moteur</strong>
+                <img src="images/sae pompe/moteur.png" alt="Moteur">
+            </div>
+        </div>
+
+        <p>Ces calculs nous ont permis de sélectionner un <strong>moteur adapté</strong> à notre application (pompage d'eau) en fonction de la hauteur de relevage, du débit souhaité et du rendement.</p>
+
+        <hr>
+
+        <h4>🛠️ Critères de sélection des composants</h4>
+        <p>Les composants ont été choisis pour répondre aux exigences techniques, de sécurité et de compatibilité avec l'automate Schneider M221.</p>
+
+        <div class="component-card">
+            <strong>🔌 Contacteur</strong>
+            <img src="images/sae pompe/contacteur.png" alt="Contacteur">
+            <p>Dispositif de commande pour les circuits de puissance</p>
+        </div>
+
+        <div class="component-card">
+            <strong>⚡ Disjoncteur</strong>
+            <img src="images/sae pompe/disjoncteur.png" alt="Disjoncteur">
+            <p>Protection contre les surcharges et courts-circuits</p>
+        </div>
+
+        <div class="component-card">
+            <strong>🔧 Sectionneur</strong>
+            <img src="images/sae pompe/Interupteur sectioneur.png" alt="Sectionneur">
+            <p>Isolation sécurisée du circuit électrique</p>
+        </div>
+
+        <hr>
+
+        <div class="comment-box">
+            <p><strong>🔗 Lien avec les matières :</strong></p>
+            <ul>
+                <li><strong>Physique appliquée</strong> : calculs d'intensité, puissance, pertes de charge, loi d'Ohm</li>
+                <li><strong>Énergie</strong> : choix des composants de protection, respect des normes et sécurité</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="special-box">
+            <h4>🎯 Lien avec la compétence C1b – Concevoir</h4>
+            <blockquote>
+                <em>"Réaliser un prototype matériel et logiciel"</em>
+            </blockquote>
+            <p>✔️ J'ai appliqué une <strong>démarche rigoureuse de sélection technique</strong> en partant des <strong>calculs</strong> jusqu'aux <strong>données constructeurs</strong>, en veillant à la cohérence du système.</p>
+            <p><strong>🧠 Apprentissage critique :</strong><br>
+            J'ai appris à croiser les résultats techniques avec les documents fabricants pour garantir <strong>fiabilité, sécurité et conformité</strong> de l'installation.</p>
+        </div>
+
+        <hr>
+
+        <h3>💵 Devis détaillé du projet</h3>
+        <img src="images/sae pompe/DEVIS.png" alt="Devis">
+
+        <div class="comment-box">
+            <p>💬 <strong>Commentaire</strong> : Ce tableau montre la capacité à anticiper les coûts, vérifier les disponibilités et justifier chaque dépense.</p>
+        </div>
+
+        <p>
+            <span class="competence-badge">🎯 Compétence C1b</span>
+            <span class="competence-badge">✅ Conception réaliste</span>
+            <span class="matiere-badge">⚡ Électrotechnique</span>
+            <span class="matiere-badge">📊 Excel</span>
+            <span class="matiere-badge">🔬 Physique appliquée</span>
+        </p>
+
+        <hr>
+
+        <h3>📐 CAO et documentation technique (C1c)</h3>
+
+        <div class="image-grid">
+            <div class="image-box">
+                <strong>Schéma de commande</strong>
+                <img src="images/sae pompe/schema de comande.png" alt="Schéma de commande">
+            </div>
+
+            <div class="image-box">
+                <strong>Schéma de puissance</strong>
+                <img src="images/sae pompe/schema de puissance.png" alt="Schéma de puissance">
+            </div>
+        </div>
+
+        <div class="comment-box">
+            <p>💬 <strong>Commentaire</strong> : Ces schémas permettent de visualiser clairement la logique de commande et le circuit de puissance, essentiels pour la conception et la réalisation du système automatisé.</p>
+        </div>
+
+        <p>
+            <span class="competence-badge">🎯 Compétence C1c – Rédiger un dossier technique</span>
+            <span class="competence-badge">✅ Normes de schématisation industrielle</span>
+        </p>
+
+        <p>
+            <span class="matiere-badge">📐 CAO</span>
+            <span class="matiere-badge">⚡ Énergie</span>
+            <span class="matiere-badge">🔬 Physique appliquée</span>
+            <span class="matiere-badge">⚙️ Automatisme</span>
+        </p>
+
+        <hr>
+
+        <h4>📄 Nomenclature</h4>
+        <img src="images/sae pompe/nomenclature.jpg" alt="Nomenclature">
+
+        <div class="comment-box">
+            <p>💬 <strong>Commentaire</strong> : Elle permet de suivre les références, gérer le stock, et préparer l'assemblage.</p>
+        </div>
+
+        <p>
+            <span class="competence-badge">🎯 Compétence C1c</span>
+            <span class="competence-badge">✅ Conformité aux normes</span>
+            <span class="matiere-badge">📐 CAO</span>
+            <span class="matiere-badge">⚡ Énergie</span>
+            <span class="matiere-badge">⚙️ Automatisme</span>
+        </p>
+
+        <hr>
+
+        <div class="bilan-section">
+            <h2>📝 Bilan Personnel</h2>
+            <p>Cette phase m'a permis de structurer ma démarche d'ingénierie en partant de l'analyse fonctionnelle jusqu'à la réalisation complète du prototype matériel et logiciel.</p>
+            <p>J'ai appris à exploiter les outils de CAO pour réaliser des schémas clairs et conformes, essentiels pour la compréhension et la maintenance. La sélection des composants, basée sur des calculs techniques rigoureux et l'étude des datasheets, m'a renforcé dans l'importance de la précision et de la compatibilité entre éléments.</p>
+            <p>La programmation Ladder à partir du GRAFCET m'a aidé à traduire la logique théorique en automatisme concret, garantissant la maîtrise des séquences et transitions. Enfin, la préparation du devis m'a sensibilisé à la gestion des ressources et à l'anticipation des coûts.</p>
+            <p><strong>Cette étape a consolidé mes compétences en conception globale, de la théorie à la réalisation, tout en intégrant les contraintes techniques et économiques.</strong></p>
+        </div>
+
+    </div>
+
+    <script>
+        // ===== NAVIGATION SCROLL =====
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // ===== HAMBURGER MENU =====
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Fermer le menu en cliquant sur un lien (mobile)
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const parent = link.parentElement;
+                if (parent.classList.contains('has-dropdown') && window.innerWidth <= 1024) {
+                    e.preventDefault();
+                    parent.classList.toggle('open');
+                } else if (!link.getAttribute('href').startsWith('#')) {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
+            });
+        });
+
+        // ===== ACTIVE LINK DETECTION =====
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === currentPage) {
+                link.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAE Arkanoid/Snake - Concevoir | Portfolio GEII</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding-top: 80px;
+            line-height: 1.6;
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(15, 32, 39, 0.95), rgba(44, 83, 100, 0.95));
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(0, 191, 255, 0.5);
+            box-shadow: 0 4px 20px rgba(0, 191, 255, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .nav-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00bfff;
+            text-shadow: 0 0 20px rgba(0, 191, 255, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-logo::before {
+            content: '⚡';
+            font-size: 1.8rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+        }
+
+        .nav-menu > li > a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.2rem;
+            color: rgba(0, 191, 255, 0.9);
+            text-decoration: none;
+            border-radius: 8px;
+            background: rgba(0, 191, 255, 0.05);
+            border: 1px solid rgba(0, 191, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu > li > a.active {
+            background: rgba(0, 191, 255, 0.15);
+            color: #00ffff;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #00bfff;
+            border-radius: 3px;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* ===== TITLES ===== */
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00ffff;
+            font-size: 2.5rem;
+            text-align: center;
+            border-bottom: 4px solid #00bfff;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00ffff;
+            font-size: 2rem;
+            margin-top: 50px;
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 5px solid #00bfff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+        }
+
+        h3 {
+            color: #00bfff;
+            font-size: 1.5rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 191, 255, 0.4);
+        }
+
+        h4 {
+            color: #00bfff;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* ===== IMAGES ===== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 2px solid rgba(0, 191, 255, 0.4);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 191, 255, 0.3);
+            margin: 20px auto;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 255, 255, 0.5);
+        }
+
+        /* ===== TABLES ===== */
+        table {
+            width: 100%;
+            background: rgba(15, 32, 39, 0.8);
+            border: 2px solid rgba(0, 191, 255, 0.3);
+            border-radius: 10px;
+            margin: 20px 0;
+            border-collapse: collapse;
+            overflow: hidden;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #0f2027, #2c5364);
+        }
+
+        th {
+            color: #00ffff;
+            font-weight: bold;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            color: #e0e0e0;
+            padding: 12px;
+            border-bottom: 1px solid rgba(0, 191, 255, 0.2);
+        }
+
+        tr:hover {
+            background: rgba(0, 191, 255, 0.1);
+        }
+
+        /* ===== CONTENT BOX ===== */
+        .content-box {
+            background: rgba(0, 191, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #00bfff;
+            box-shadow: 0 3px 15px rgba(0, 191, 255, 0.2);
+        }
+
+        /* ===== BLOCKQUOTE ===== */
+        blockquote {
+            background: rgba(0, 191, 255, 0.1);
+            border-left: 4px solid #00ffff;
+            padding: 15px 20px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #00ffff;
+        }
+
+        /* ===== CODE ===== */
+        pre {
+            background: #0f2027;
+            border: 1px solid rgba(0, 191, 255, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        code {
+            color: #00bfff;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* ===== VIDEO EMBED ===== */
+        .video-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .video-container a {
+            display: inline-block;
+            position: relative;
+        }
+
+        .video-container img {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .video-container a:hover img {
+            transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(0, 191, 255, 0.6);
+        }
+
+        /* ===== HR ===== */
+        hr {
+            border: none;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00bfff, transparent);
+            margin: 40px 0;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">Portfolio GEII</a>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">🏠 Accueil</a></li>
+                <li><a href="referenciel.html">📊 Référentiel</a></li>
+                <li><a href="#" class="active">📚 Projets</a></li>
+                <li><a href="#">💼 Expérience</a></li>
+                <li><a href="contact.html">📞 Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ===== CONTAINER ===== -->
+    <div class="container">
+        
+        <h1>🎮 Portfolio SAE Arkanoid – BUT GEII 1ère Année</h1>
+
+        <h2>🔹 Compétence : Concevoir</h2>
+
+        <h3>🔸 Contexte</h3>
+        <p>Initialement, notre projet consistait à réaliser une borne d'arcade miniature, mais après analyse des contraintes (transport, esthétique et complexité), nous avons pivoté vers une console portable inspirée de la Game Boy.</p>
+
+        <h3>🔸 Activités réalisées</h3>
+
+        <h4>📋 Cahier des charges et planification</h4>
+        <div class="content-box">
+            <ul>
+                <li>Analyse des besoins réels et adaptation du projet : abandon de la borne d'arcade pour une console portable.</li>
+                <li>Rédaction d'un cahier des charges incluant les composants (PIC16F18877, écran TFT), contraintes techniques (taille, budget) et moyens disponibles à l'IUT.</li>
+                <li>Utilisation d'un <strong>diagramme de Gantt</strong> pour organiser les tâches et planifier le projet.</li>
+            </ul>
+        </div>
+
+        <img src="images/Sae snake/diagrame_de_gant.jpg" alt="Diagramme de Gantt">
+
+        <div class="content-box">
+            <p><strong>Apprentissage critique :</strong></p>
+            <ul>
+                <li>Adapter un projet aux contraintes techniques et matérielles.</li>
+                <li>Maîtriser la gestion de projet pour assurer le respect des délais.</li>
+            </ul>
+            <p><strong>Lien avec les matières :</strong></p>
+            <ul>
+                <li><strong>Communication & PPP</strong> : présentation et argumentation des choix lors des réunions de suivi.</li>
+                <li><strong>Automatisme & Informatique industrielle</strong> : structuration des tâches et formalisation du cahier des charges.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h4>🔧 Conception mécanique (SolidWorks)</h4>
+        <div class="content-box">
+            <ul>
+                <li>Conception 3D du boîtier à partir de croquis papier et de mesures précises (pied à coulisse, datasheet).</li>
+                <li>Réajustement des dimensions pour intégrer le PCB prototype.</li>
+                <li>Création d'un système de fermeture vissé inspiré des calculatrices (impression 3D plus simple à réaliser).</li>
+            </ul>
+        </div>
+
+        <p><strong>PCB prototype utilisé :</strong></p>
+        <img src="images/Sae snake/PCB_joystique.png" alt="PCB joystick">
+
+        <h3>📸 Représentations du Projet SAE Snake</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>🔍 Vue technique</th>
+                    <th>📐 Cotation CAO</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="images/Sae snake/Image du croquis.PNG" alt="Croquis"></td>
+                    <td><img src="images/Sae snake/cotation_pcb_solidworks.png" alt="Cotation"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <blockquote>
+            📝 À gauche : le <strong>croquis fonctionnel initial</strong> du projet SAE Arcanoid, illustrant les composants clés et leurs connexions logiques.<br>
+            🧰 À droite : la <strong>modélisation détaillée sous SolidWorks</strong> avec les <strong>cotes précises du PCB</strong>, utilisée pour la fabrication.
+        </blockquote>
+
+        <h3>🎯 Boîtier final du projet SAE Snake</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>🔲 Vue avant</th>
+                    <th>🔄 Vue arrière</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="images/Sae snake/boitier_final.png" alt="Boîtier avant"></td>
+                    <td><img src="images/Sae snake/arriere_boitier.png" alt="Boîtier arrière"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p><strong>Petite vidéo illustrative :</strong></p>
+        <div class="video-container">
+            <a href="https://youtu.be/8NDEZ3Jczmg" target="_blank">
+                <img src="https://img.youtube.com/vi/8NDEZ3Jczmg/hqdefault.jpg" alt="Test du moteur">
+            </a>
+        </div>
+
+        <blockquote>
+            🛠️ Le boîtier a été conçu pour <strong>protéger l'électronique</strong> tout en assurant l'accès aux connecteurs.<br>
+            🔌 <strong>Vue avant</strong> : interfaces utilisateurs et connecteurs accessibles.<br>
+            🔧 <strong>Vue arrière</strong> : accès aux bornes d'alimentation et éventuelles aérations.
+        </blockquote>
+
+        <div class="content-box">
+            <p><strong>Apprentissage critique :</strong></p>
+            <ul>
+                <li>Adapter la conception au fur et à mesure des tests et impressions.</li>
+                <li>Utiliser les itérations d'impression 3D pour corriger les défauts.</li>
+            </ul>
+            <p><strong>Lien avec les matières :</strong></p>
+            <ul>
+                <li><strong>Électronique & Systèmes embarqués</strong> : intégration mécanique du PCB.</li>
+                <li><strong>Mathématiques & Physique appliquée</strong> : calculs de dimensions, utilisation du pied à coulisse.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h3>🖨️ Utilisation de SuperSlicer pour l'impression 3D du boîtier</h3>
+        <p>Afin de fabriquer notre boîtier conçu sur SolidWorks, j'ai utilisé <strong>SuperSlicer</strong>, un logiciel de <strong>tranchage 3D</strong> (slicer) qui permet de convertir un modèle 3D en <strong>G-code</strong> lisible par l'imprimante 3D.</p>
+
+        <h4>📝 Étapes réalisées :</h4>
+        <div class="content-box">
+            <ul>
+                <li>🔍 <strong>Chargement du fichier STL</strong> du boîtier (issu de SolidWorks) dans SuperSlicer.</li>
+                <li>🔧 <strong>Paramétrage des réglages d'impression</strong> : hauteur de couche, remplissage, température de buse et plateau.</li>
+                <li>📏 <strong>Ajustement des supports</strong> et de la première couche pour assurer une bonne adhérence.</li>
+                <li>📄 <strong>Génération du fichier G-code</strong> prêt à être transféré sur l'imprimante 3D.</li>
+                <li>✅ <strong>Test d'impression</strong> et vérification des dimensions réelles après fabrication.</li>
+            </ul>
+        </div>
+
+        <h4>📸 Illustration</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Avant du boîtier</th>
+                    <th>Arrière du boîtier (PCB)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="images/Sae snake/Imprimer vue de face.jpg" alt="Avant impression"></td>
+                    <td><img src="images/Sae snake/arriere_imprimer.jpg" alt="Arrière impression"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>🎓 Liens pédagogiques</h4>
+
+        <h5>Apprentissage critique</h5>
+        <div class="content-box">
+            <ul>
+                <li>Comprendre le lien entre <strong>modélisation CAO</strong> et <strong>fabrication réelle</strong>.</li>
+                <li>Apprendre à régler les paramètres d'un slicer pour garantir une impression <strong>fiable et précise</strong>.</li>
+                <li>Savoir <strong>corriger les erreurs d'adhérence ou de surchauffe</strong> en modifiant le G-code ou les paramètres.</li>
+            </ul>
+        </div>
+
+        <h5>Lien avec les compétences GEII</h5>
+        <table>
+            <thead>
+                <tr>
+                    <th>Compétence GEII</th>
+                    <th>Détail</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>C1 – Concevoir</strong></td>
+                    <td>Transformer une modélisation 3D en objet physique via impression 3D</td>
+                </tr>
+                <tr>
+                    <td><strong>C4 – Mettre en œuvre</strong></td>
+                    <td>Configurer une machine à commande numérique (ici l'imprimante) pour produire une pièce</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h5>📚 Lien avec les matières</h5>
+        <div class="content-box">
+            <ul>
+                <li><strong>Conception assistée par ordinateur (CAO)</strong> : lien direct avec le logiciel SolidWorks utilisé.</li>
+                <li><strong>Fabrication numérique</strong> : paramétrage, test et validation de l'impression 3D.</li>
+                <li><strong>Projet SAE (Snake ou autres)</strong> : intégration complète du boîtier dans la solution matérielle du projet.</li>
+            </ul>
+        </div>
+
+        <blockquote>
+            📌 <em>Grâce à cette étape, j'ai compris que concevoir un boîtier fonctionnel ne se limite pas à la modélisation : il faut aussi anticiper les contraintes d'impression comme la dilatation, les jeux mécaniques et la stabilité du modèle pendant l'impression.</em>
+        </blockquote>
+
+        <hr>
+
+        <h4>⚡ Conception électronique (KiCad)</h4>
+        <div class="content-box">
+            <ul>
+                <li>Réalisation du schéma électrique complet de la carte son.</li>
+                <li>Création des fichiers Gerber et validation auprès du constructeur.</li>
+                <li>Résolution d'erreurs de routage (erreurs de fils, problèmes de perçage).</li>
+            </ul>
+        </div>
+
+        <h3>📐 Schémas KiCad – Conception et Contrôle</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>🧠 Schéma de carte son (Projet)</th>
+                    <th>📄 Schéma reçu au contrôle de SAE</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="images/Sae snake/kikade_carte_son.png" alt="KiCad carte son"></td>
+                    <td><img src="images/Sae snake/Realisationd'une autre carte son.png" alt="Contrôle SAE"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <blockquote>
+            🎓 Ce tableau compare :<br>
+            - À gauche : le <strong>schéma électrique que j'ai conçu moi-même</strong> sous KiCad, pour la réalisation de la carte son du projet SAE Snake.<br>
+            - À droite : le <strong>schéma donné lors de mon contrôle de SAE</strong>, que j'ai dû analyser et corriger en temps limité.<br><br>
+            🔍 Cet exercice m'a permis de valider ma capacité à :<br>
+            - Lire un schéma électronique inconnu rapidement<br>
+            - Repérer les incohérences de routage<br>
+            - Appliquer la même rigueur que dans mon projet personnel
+        </blockquote>
+
+        <p><strong>Routage de la carte son :</strong></p>
+        <img src="images/Sae snake/image.png" alt="Routage">
+
+        <p><strong>Création de fichier gerber avec les fichiers perçage...</strong></p>
+        <img src="images/Sae snake/Capture d'écran 2025-06-07 140221.png" alt="Fichier Gerber">
+        <img src="images/Sae snake/Capture d'écran 2025-06-07 140238.png" alt="Tracer Gerber">
+
+        <p><strong>Simulation chez le constructeur :</strong></p>
+        <img src="images/Sae snake/Simulation_constructeur.png" alt="Simulation constructeur">
+
+        <div class="content-box">
+            <p><strong>Apprentissage critique :</strong></p>
+            <ul>
+                <li>Comprendre la chaîne de conception et de validation d'un PCB.</li>
+                <li>Apprendre à gérer les erreurs et les contraintes du fabricant.</li>
+            </ul>
+            <p><strong>Lien avec les matières :</strong></p>
+            <ul>
+                <li><strong>Électronique & Systèmes embarqués</strong> : schéma électrique, routage, validation des fichiers Gerber.</li>
+                <li><strong>Automatisme & Informatique industrielle</strong> : interactions entre le PCB et le microcontrôleur.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h3>🔨 Brasure des composants et réalisation d'une liste</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Composant</th>
+                    <th>Référence</th>
+                    <th>Quantité</th>
+                    <th>Fonction</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Amplificateur</td>
+                    <td>LM386N</td>
+                    <td>1</td>
+                    <td>Amplification audio</td>
+                </tr>
+                <tr>
+                    <td>Potentiomètre</td>
+                    <td>10kΩ linéaire</td>
+                    <td>1</td>
+                    <td>Contrôle volume</td>
+                </tr>
+                <tr>
+                    <td>Condensateur</td>
+                    <td>10µF électrolytique</td>
+                    <td>2</td>
+                    <td>Découplage alimentation</td>
+                </tr>
+                <tr>
+                    <td>Condensateur</td>
+                    <td>100nF céramique</td>
+                    <td>1</td>
+                    <td>Filtrage HF</td>
+                </tr>
+                <tr>
+                    <td>Condensateur</td>
+                    <td>47nF céramique</td>
+                    <td>1</td>
+                    <td>Couplage entrée</td>
+                </tr>
+                <tr>
+                    <td>Condensateur</td>
+                    <td>220µF électrolytique</td>
+                    <td>1</td>
+                    <td>Filtrage sortie</td>
+                </tr>
+                <tr>
+                    <td>Résistance</td>
+                    <td>10Ω 1/4W</td>
+                    <td>1</td>
+                    <td>Protection sortie</td>
+                </tr>
+                <tr>
+                    <td>Résistance</td>
+                    <td>0Ω (strap)</td>
+                    <td>1</td>
+                    <td>Liaison directe</td>
+                </tr>
+                <tr>
+                    <td>Interrupteur</td>
+                    <td>ON/OFF</td>
+                    <td>1</td>
+                    <td>Mise sous tension</td>
+                </tr>
+                <tr>
+                    <td>Connecteurs</td>
+                    <td>2.54mm</td>
+                    <td>4</td>
+                    <td>Liaisons PCB</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>Une fois qu'on a dressé une liste des composants, on est parti braser la carte son sur un poste de soudage :</p>
+        <p>On a pu souder les différents composants :</p>
+
+        <img src="images/Sae snake/PCB_carte_son.png" alt="PCB carte son">
+
+        <div class="content-box">
+            <p><strong>Apprentissage critique :</strong> On a appris à bien braser et détecter les éventuelles pannes.</p>
+            <p><strong>Compétence & Lien avec la matière :</strong> ELEN</p>
+        </div>
+
+        <hr>
+
+        <h2>🔌 Réalisation du câblage global et configuration du microcontrôleur</h2>
+        <p>Dans le cadre du projet SAE Snake, j'ai réalisé l'<strong>intégration matérielle</strong> complète entre les différents composants : écran LCD, carte son, PCB joystick, et carte principale. Cette étape repose sur la <strong>configuration du microcontrôleur</strong> via <strong>MCC (MPLAB Code Configurator)</strong> ainsi que sur l'interprétation de <strong>datasheets techniques</strong> pour le câblage.</p>
+
+        <h3>📌 Configuration des entrées/sorties (MCC)</h3>
+        <p>J'ai commencé par configurer l'ensemble des <strong>broches d'E/S</strong> (entrées/sorties) de mon microcontrôleur pour chaque composant connecté :</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>MCC – Affectation des broches</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="images/Sae snake/pINmodule1.png" alt="Pin module 1"></td>
+                </tr>
+                <tr>
+                    <td><img src="images/Sae snake/Pinmodule2suit.png" alt="Pin module 2"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <blockquote>
+            📌 Grâce à ce pin module, j'ai défini les broches à utiliser pour :<br>
+            - l'écran LCD (SPI/I2C),<br>
+            - le PCB de prototypage (GPIO, alimentation),<br>
+            - la carte son (sortie audio),<br>
+            - les joysticks et boutons (entrées numériques).
+        </blockquote>
+
+        <h3>📚 Câblage basé sur les documentations techniques</h3>
+        <p>Pour garantir un câblage correct, j'ai utilisé les <strong>datasheets</strong> et schémas de référence des composants :</p>
+
+        <h3>🔧 Schémas de câblage des composants</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>🎮 Joystick Shield – PCB</th>
+                    <th>🖥️ Écran LCD – I2C</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="images/Sae snake/Capture d'écran 2025-04-24 130112.png" alt="Schéma joystick"></td>
+                    <td><img src="images/Sae snake/Ecran_Cablage.jpg" alt="Schéma écran"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <blockquote>
+            🔧 Ces schémas m'ont permis de :<br>
+            - Identifier les <strong>broches de connexion</strong> pour chaque composant.<br>
+            - Comprendre les <strong>protocoles utilisés</strong> (I2C, entrées numériques).<br>
+            - Réaliser un <strong>câblage fonctionnel et fiable</strong> dans le respect des tensions et niveaux logiques.
+        </blockquote>
+
+        <h3>🎓 Liens pédagogiques</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Élément travaillé</th>
+                    <th>Détail</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Compétence visée</strong></td>
+                    <td>C1 – Concevoir une solution technique (matérielle ou logicielle)</td>
+                </tr>
+                <tr>
+                    <td><strong>Matière associée</strong></td>
+                    <td>Informatique embarquée / TP microcontrôleur</td>
+                </tr>
+                <tr>
+                    <td><strong>Apprentissage critique</strong></td>
+                    <td><strong>C1a : Produire une analyse fonctionnelle d'un système</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Justification</strong></td>
+                    <td>J'ai été capable de déterminer les fonctions d'entrées/sorties, les types de signaux, et les connexions entre composants selon les spécifications matérielles.</td>
+                </tr>
+                <tr>
+                    <td><strong>SAE associée</strong></td>
+                    <td>SAE Snake / Carte embarquée connectée</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <blockquote>
+            🎓 <em>Cette phase de conception m'a permis d'apprendre à lire un schéma technique, configurer un microcontrôleur de façon autonome et concevoir un câblage structuré pour un système électronique embarqué.</em>
+        </blockquote>
+
+        <hr>
+
+        <h2>🔋 Choix des composants et gestion énergétique</h2>
+        <p>Dans cette phase, il a été essentiel de <strong>sélectionner des composants</strong> compatibles entre eux et optimisés pour une <strong>consommation énergétique maîtrisée</strong>, en vue d'une alimentation sur batterie rechargeable. Cette démarche a impliqué une réflexion autour des critères suivants :</p>
+
+        <div class="content-box">
+            <ul>
+                <li>Compatibilité en tension (5V ou 3.3V)</li>
+                <li>Consommation énergétique des composants</li>
+                <li>Disponibilité des modules</li>
+                <li>Facilité d'intégration dans le système</li>
+                <li>Taille physique des modules</li>
+            </ul>
+        </div>
+
+        <h4>📊 Tableau estimatif de la consommation par composant :</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Composant</th>
+                    <th>Tension (V)</th>
+                    <th>Consommation (mA)</th>
+                    <th>Puissance (W)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Microcontrôleur PIC16F18877</td>
+                    <td>5V</td>
+                    <td>40</td>
+                    <td>0.20</td>
+                </tr>
+                <tr>
+                    <td>Écran TFT 2.8" SPI</td>
+                    <td>5V</td>
+                    <td>60</td>
+                    <td>0.30</td>
+                </tr>
+                <tr>
+                    <td>Boutons poussoir (x4)</td>
+                    <td>5V</td>
+                    <td>10</td>
+                    <td>0.05</td>
+                </tr>
+                <tr>
+                    <td>Joystick 4 directions</td>
+                    <td>5V</td>
+                    <td>20</td>
+                    <td>0.10</td>
+                </tr>
+                <tr>
+                    <td>PCB Joystick Shield v1.a</td>
+                    <td>5V</td>
+                    <td>15</td>
+                    <td>0.075</td>
+                </tr>
+                <tr>
+                    <td>Module TP4056 (veille)</td>
+                    <td>3.7V</td>
+                    <td>10</td>
+                    <td>0.037</td>
+                </tr>
+                <tr>
+                    <td>Carte son (AOP LM386)</td>
+                    <td>5V</td>
+                    <td>25</td>
+                    <td>0.125</td>
+                </tr>
+                <tr>
+                    <td><strong>Total estimé</strong></td>
+                    <td>-</td>
+                    <td><strong>180 mA</strong></td>
+                    <td><strong>≈ 0.9 W</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>🔌 Choix du module de charge et de la batterie</h3>
+        <p>Sur la base du tableau précédent, une consommation moyenne de <strong>180 mA</strong> pour le système complet a été estimée.</p>
+
+        <h4>Choix du module de charge : <strong>TP4056</strong></h4>
+        <div class="content-box">
+            <ul>
+                <li>Module compact, spécialisé dans la <strong>recharge des batteries Li-ion 3.7V</strong>.</li>
+                <li>Intègre la <strong>protection contre les surtensions</strong>, surintensités et court-circuits.</li>
+                <li>Prend en charge un courant de charge jusqu'à <strong>1A</strong>, suffisant pour notre batterie et usage.</li>
+            </ul>
+        </div>
+
+        <img src="images/Sae snake/Module de charge.png" alt="Module de charge">
+
+        <h4>Choix de la batterie : <strong>Batterie Li-ion 3.7V 1000 mAh</strong></h4>
+        <div class="content-box">
+            <ul>
+                <li>Récupérée d'une manette PS4 HS (économie circulaire)</li>
+                <li>Donne une autonomie théorique ≈ <strong>5h</strong> (1000 mAh / 180 mA)</li>
+                <li>Forme compacte, facile à intégrer dans le boîtier</li>
+            </ul>
+        </div>
+
+        <img src="images/Sae snake/Batteire.png" alt="Batterie">
+
+        <h3>📚 Apprentissage critique :</h3>
+        <div class="content-box">
+            <ul>
+                <li>Savoir <strong>estimer les besoins énergétiques</strong> d'un système embarqué.</li>
+                <li>Savoir <strong>dimensionner une source d'énergie</strong> (batterie + module de charge) selon la <strong>consommation réelle</strong>.</li>
+                <li>Comprendre <strong>l'équilibre entre puissance, encombrement et autonomie</strong>.</li>
+                <li>Maîtriser la <strong>conception électronique sous contraintes physiques et énergétiques</strong>.</li>
+                <li>Réutiliser un composant (batterie PS4) de manière responsable, en lien avec une <strong>démarche écoresponsable</strong>.</li>
+            </ul>
+        </div>
+
+        <h3>📖 Lien avec les matières :</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Matière</th>
+                    <th>Liens concrets dans le projet</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Électronique & Systèmes embarqués</strong></td>
+                    <td>Étude du schéma électrique, calcul de consommation, intégration du TP4056, conception du circuit de charge</td>
+                </tr>
+                <tr>
+                    <td><strong>Automatisme & Informatique industrielle</strong></td>
+                    <td>Interaction entre l'alimentation, le microcontrôleur et les entrées/sorties du système</td>
+                </tr>
+                <tr>
+                    <td><strong>Physique appliquée</strong></td>
+                    <td>Calcul de puissance, estimation d'autonomie, rendement de charge, gestion thermique</td>
+                </tr>
+                <tr>
+                    <td><strong>Gestion de projet / Développement durable</strong></td>
+                    <td>Réutilisation de composants, réflexion sur la durabilité du système</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>🔧 Conception du module de charge sous KiCad</h3>
+        <p>Pour valider la solution, le module de charge a été intégré dans le schéma global sous <strong>KiCad</strong>. Cela a nécessité :</p>
+
+        <div class="content-box">
+            <ul>
+                <li>La création du <strong>schéma électrique</strong></li>
+                <li>Le <strong>routage manuel</strong> du PCB</li>
+                <li>La <strong>génération des fichiers Gerber</strong> pour fabrication</li>
+            </ul>
+        </div>
+
+        <p><strong>Schéma électrique :</strong></p>
+        <img src="images/Sae snake/shcema modulede charge.jpg" alt="Schéma module de charge">
+
+        <hr>
+
+        <h2>💻 Programmation du jeu Arkanoid – SAE Snake</h2>
+
+        <div class="content-box">
+            <p><strong>Compétence :</strong> C1 – Concevoir une solution matérielle ou logicielle</p>
+            <p><strong>Matières associées :</strong> Informatique embarquée, Automatisme & Interfaces utilisateur</p>
+            <p><strong>Apprentissage critique :</strong> Transformer un cahier des charges en code fonctionnel, corriger des bugs, organiser une structure logicielle robuste</p>
+        </div>
+
+        <h3>⚙️ Initialisation des paramètres du jeu</h3>
+        <pre><code>#define SCREEN_WIDTH  320
+#define SCREEN_HEIGHT 240
+#define ROTATION      1</code></pre>
+
+        <h2>🎮 Analyse complète du code Arkanoid</h2>
+
+        <h3>📋 Vue d'ensemble du projet</h3>
+        <p>Ce code implémente un jeu Arkanoid complet sur microcontrôleur PIC avec écran TFT, démontrant une maîtrise des <strong>systèmes embarqués</strong> et de la <strong>programmation en C</strong>.</p>
+
+        <hr>
+
+        <h3>📦 Section 1: Inclusions et définitions globales</h3>
+        <pre><code>#include "mcc_generated_files/mcc.h"
+#include "ILI9341.h"
+#include "GFX_Library.h"
+#include &lt;stdbool.h&gt;
+#include &lt;stdio.h&gt;</code></pre>
+
+        <div class="content-box">
+            <p><strong>💡 Explication :</strong></p>
+            <ul>
+                <li>Intégration des bibliothèques générées automatiquement par MCC (MPLAB Code Configurator)</li>
+                <li>Utilisation de l'écran ILI9341 (320x240 pixels)</li>
+                <li>Inclusion des types booléens et fonctions d'affichage</li>
+            </ul>
+            <p><strong>🎯 Lien compétences :</strong></p>
+            <ul>
+                <li><strong>Automatisme & Informatique industrielle</strong> : Utilisation d'outils de configuration automatique</li>
+                <li><strong>Électronique & Systèmes embarqués</strong> : Interface avec composants externes (écran TFT)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h3>⚙️ Section 2: Configuration écran et constantes de jeu</h3>
+        <pre><code>// === Écran ===
+#define SCREEN_WIDTH  320
+#define SCREEN_HEIGHT 240
+#define ROTATION      1
+
+// === Raquette ===
+#define PADDLE_WIDTH   60
+#define PADDLE_HEIGHT  10
+#define PADDLE_SPEED   7
+
+// === Balle ===
+#define BALL_SIZE      6
+
+// === Briques ===
+#define BRICK_ROWS     6
+#define BRICK_COLS     10
+#define BRICK_WIDTH    30
+#define BRICK_HEIGHT   10</code></pre>
+
+        <div class="content-box">
+            <p><strong>💡 Explication :</strong></p>
+            <ul>
+                <li>Définition des constantes pour éviter les "nombres magiques"</li>
+                <li>Paramétrage modulaire permettant des ajustements faciles</li>
+                <li>Organisation logique par éléments de jeu</li>
+            </ul>
+            <p><strong>🎯 Lien compétences :</strong></p>
+            <ul>
+                <li><strong>Mathématiques & Physique appliquée</strong> : Calculs dimensionnels, positionnement géométrique</li>
+                <li><strong>Communication & PPP</strong> : Code lisible et bien structuré</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h3>🕹️ Section 3: Lecture des entrées analogiques (Joystick)</h3>
+        <pre><code>uint16_t lireJoystickX() {
+    ADPCH = 0x02; // RA2
+    ADCON0bits.ADON = 1;
+    ADCON0bits.ADGO = 1;
+    while (ADCON0bits.ADGO);
+    return ((uint16_t)ADRESH << 8) | ADRESL;
+}
+
+uint16_t lireJoystickY() {
+    ADPCH = 0x09; // RB1 = AN9
+    ADCON0bits.ADON = 1;
+    ADCON0bits.ADGO = 1;
+    while (ADCON0bits.ADGO);
+    return ((uint16_t)ADRESH << 8) | ADRESL;
+}</code></pre>
+
+        <div class="content-box">
+            <p><strong>💡 Explication :</strong></p>
+            <ul>
+                <li>Configuration des canaux ADC pour lecture joystick 2 axes</li>
+                <li>Gestion des registres de conversion analogique-numérique</li>
+                <li>Reconstruction de la valeur 10 bits à partir des registres haut/bas</li>
+            </ul>
+            <p><strong>🎯 Lien compétences :</strong></p>
+            <ul>
+                <li><strong>Automatisme & Informatique industrielle</strong> : Gestion des entrées/sorties, interfaçage capteurs</li>
+                <li><strong>Électronique & Systèmes embarqués</strong> : Conversion analogique-numérique, registres microcontrôleur</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h3>🎵 Section 4: Système audio et mélodies</h3>
+        <pre><code>int music[12] = {102,108,115,121,129,136,145,153,162,172,182,193};
+// Do(C),Do#(C#),Re(D),Re#(D#),Mi(E),Fa(F),Fa#(F#),Sol(G),Sol#(G#),La(A),La#(A#),Si(B)
+
+void playMenuMusic(void) {
+    int menuNotes[] = {0, 4, 7, 0}; // Do, Mi, Sol, Do
+    for (int i = 0; i < 4; i++) {
+        NCO1INC = ((5 + music[menuNotes[i]] * 1.28) / 4);
+        __delay_ms(300);
+    }
+}</code></pre>
+
+        <img src="images/Sae snake/IMG_0534.jpg" alt="Audio système">
+
+        <div class="content-box">
+            <p><strong>💡 Explication :</strong></p>
+            <ul>
+                <li>Utilisation du module NCO (Numerically Controlled Oscillator) pour générer des fréquences</li>
+                <li>Tableau de fréquences correspondant aux notes musicales</li>
+                <li>Séquences mélodiques différentes selon le contexte (menu, victoire, défaite)</li>
+            </ul>
+            <p><strong>🎯 Lien compétences :</strong></p>
+            <ul>
+                <li><strong>Mathématiques & Physique appliquée</strong> : Calculs de fréquences, génération de signaux</li>
+                <li><strong>Électronique & Systèmes embarqués</strong> : Modules spécialisés du microcontrôleur (NCO)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h3>🎨 Section 5: Gestion graphique et palettes</h3>
+        <pre><code>typedef enum {
+    PALETTE_CLASSIQUE,
+    PALETTE_JUL,
+    PALETTE_PASTEL,
+    PALETTE_OCEAN,
+    PALETTE_FEU
+} PaletteType;
+
+const uint16_t palette_classique[6] = {ILI9341_RED, ILI9341_ORANGE, ILI9341_YELLOW, 
+                                       ILI9341_GREEN, ILI9341_BLUE, ILI9341_MAGENTA};
+
+void drawBorders(void) {
+    fillRect(0, 20, 5, SCREEN_HEIGHT - 20, ILI9341_BLUE);
+    fillRect(SCREEN_WIDTH - 5, 20, 5, SCREEN_HEIGHT - 20, ILI9341_BLUE);
+    fillRect(0, 20, SCREEN_WIDTH, 5, ILI9341_BLUE);
+}</code></pre>
+
+        <div class="content-box">
+            <p><strong>💡 Explication :</strong></p>
+            <ul>
+                <li>Système de palettes interchangeables pour personnalisation visuelle</li>
+                <li>Fonctions de dessin optimisées pour l'affichage TFT</li>
+                <li>Interface utilisateur attractive avec bordures et éléments graphiques</li>
+            </ul>
+            <p><strong>🎯 Lien compétences :</strong></p>
+            <ul>
+                <li><strong>Communication & PPP</strong> : Interface utilisateur intuitive et esthétique</li>
+                <li><strong>Automatisme & Informatique industrielle</strong> : Gestion d'affichage, IHM (Interface Homme-Machine)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h3>🧱 Section 6: Structure des briques et niveaux</h3>
+        <pre><code>typedef struct {
+    uint16_t x, y, width, height;
+    bool active;
+    uint16_t color;
+} Brick;
+
+Brick bricks[BRICK_ROWS][BRICK_COLS];
+
+void initBricks(void) {
+    switch(level) {
+        case 1:  // Vagues décalées
+            for (uint8_t row = 0; row < BRICK_ROWS; row++) {
+                for (uint8_t col = 0; col < BRICK_COLS; col++) {
+                    if ((col + row) % 2 == 0) bricks[row][col].active = true;
+                }
+            }
+            break;
+        
+        case 3:  // Cœur
+            uint8_t pattern[6][10] = {
+                {0,1,0,0,0,0,0,0,1,0},
+                {1,1,1,0,0,0,0,1,1,1},
+                // ...
+            };
+            break;
+    }
+}</code></pre>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Image 1</th>
+                    <th>Image 2</th>
+                    <th>Image 3</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="images/Sae snake/IMG_0690.jpg" alt="Niveau 1"></td>
+                    <td><img src="images/Sae snake/IMG_0691.jpg" alt="Niveau 2"></td>
+                    <td><img src="images/Sae snake/IMG_0696.jpg" alt="Niveau 3"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="content-box">
+            <p><strong>💡 Explication :</strong></p>
+            <ul>
+                <li>Structure de données optimisée pour les briques (position, état, couleur)</li>
+                <li>Algorithmes de génération de motifs variés selon le niveau</li>
+                <li>Système de progression avec difficulté croissante</li>
+            </ul>
+            <p><strong>🎯 Lien compétences :</strong></p>
+            <ul>
+                <li><strong>Mathématiques & Physique appliquée</strong> : Algorithmique, motifs géométriques, modulo</li>
+                <li><strong>Automatisme & Informatique industrielle</strong> : Structures de données, gestion mémoire</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h3>⚽ Section 7: Physique de la balle et collisions</h3>
+        <pre><code>void updateBall(void) {
+    // Effacement position précédente
+    drawBall(ballX, ballY, ILI9341_BLACK);
+    
+    // Calcul nouvelle position
+    int16_t newX = ballX + ballSpeedX;
+    int16_t newY = ballY + ballSpeedY;
+    
+    // Collisions avec bordures
+    if (newX <= BALL_SIZE || newX >= SCREEN_WIDTH - BALL_SIZE) 
+        ballSpeedX = -ballSpeedX;
+    if (newY <= BALL_SIZE) 
+        ballSpeedY = -ballSpeedY;
+    
+    // Collision avec raquette
+    if (checkCollision(newX, newY, BALL_SIZE*2, BALL_SIZE*2,
+                       paddleX, paddleY, PADDLE_WIDTH, PADDLE_HEIGHT)) {
+        ballSpeedY = -level;
+        int16_t offset = newX - (paddleX + PADDLE_WIDTH / 2);
+        ballSpeedX = offset / 6; // Effet directionnel
+    }
+}</code></pre>
+
+        <p><strong>Voici le lien vers une vidéo illustrative :</strong></p>
+        <div class="content-box">
+            <p><a href="https://youtube.com/shorts/9vQg8wK_2AU?feature=share" target="_blank" style="color: #00bfff;">- Vidéo 1</a></p>
+        </div>
+
+        <div class="content-box">
+            <p><strong>💡 Explication :</strong></p>
+            <ul>
+                <li>Implémentation de la physique basique : rebonds, vitesse, direction</li>
+                <li>Détection de collisions rectangulaires optimisée</li>
+                <li>Effet directionnel sur la raquette pour contrôle avancé</li>
+            </ul>
+            <p><strong>🎯 Lien compétences :</strong></p>
+            <ul>
+                <li><strong>Mathématiques & Physique appliquée</strong> : Vecteurs, cinématique, détection de collisions</li>
+                <li><strong>Automatisme & Informatique industrielle</strong> : Algorithmes temps réel, optimisation</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h3>🎮 Section 8: Contrôle de la raquette</h3>
+        <pre><code>void updatePaddle(void) {
+    uint16_t valeurX = lireJoystickX();
+    uint16_t valeurY = lireJoystickY();
+    
+    int16_t newX = paddleX;
+    int16_t newY = paddleY;
+
+    // Seuils de détection joystick
+    if (valeurX < 400) newX -= PADDLE_SPEED;
+    if (valeurX > 624) newX += PADDLE_SPEED;
+    
+    // Contraintes de mouvement
+    if (newX < 0) newX = 0;
+    if (newX > SCREEN_WIDTH - PADDLE_WIDTH) 
+        newX = SCREEN_WIDTH - PADDLE_WIDTH;
+    
+    // Mise à jour graphique
+    if (newX != paddleX || newY != paddleY) {
+        clearPaddle();
+        paddleX = newX;
+        paddleY = newY;
+        drawPaddle();
+    }
+}</code></pre>
+
+        <p><strong>Voici le lien vers une vidéo illustrative :</strong></p>
+        <div class="content-box">
+            <p><a href="https://youtube.com/shorts/9vQg8wK_2AU?feature=share" target="_blank" style="color: #00bfff;">- Vidéo 1</a></p>
+        </div>
+
+        <div class="content-box">
+            <p><strong>💡 Explication :</strong></p>
+            <ul>
+                <li>Conversion des valeurs analogiques en mouvements discrets</li>
+                <li>Gestion des limites d'écran et contraintes physiques</li>
+                <li>Optimisation graphique (redessinage uniquement si changement)</li>
+            </ul>
+            <p><strong>🎯 Lien compétences :</strong></p>
+            <ul>
+                <li><strong>Automatisme & Informatique industrielle</strong> : Interface homme-machine, temps réel</li>
+                <li><strong>Mathématiques & Physique appliquée</strong> : Conversion analogique-numérique, seuillage</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h3>📊 Section 9: Interface utilisateur et informations</h3>
+        <pre><code>void drawGameInfo(void) {
+    char info[32];
+    sprintf(info, "Score: %u  Vies: %u", score, lives);
+    
+    // Effacement zone d'affichage
+    fillRect(0, 0, SCREEN_WIDTH, 20, ILI9341_BLACK);
+    
+    // Affichage texte
+    display_setCursor(10, 5);
+    display_setTextColor(ILI9341_WHITE, ILI9341_BLACK);
+    for (uint8_t i = 0; info[i]; i++) {
+        display_print(info[i]);
+    }
+    
+    // Barre de vie graphique
+    for (uint8_t i = 0; i < maxVies; i++) {
+        uint16_t color = (i < lives) ? ILI9341_RED : ILI9341_DARKGREY;
+        fillRect(baseX + i * (segmentW + spacing), baseY, segmentW, segmentH, color);
+    }
+}</code></pre>
+
+        <img src="images/Sae snake/Vie et score.png" alt="Vie et score">
+
+        <div class="content-box">
+            <p><strong>💡 Explication :</strong></p>
+            <ul>
+                <li>Affichage temps réel des informations de jeu</li>
+                <li>Interface graphique claire avec barres de vie visuelles</li>
+                <li>Gestion efficace du rafraîchissement d'écran</li>
+            </ul>
+            <p><strong>🎯 Lien compétences :</strong></p>
+            <ul>
+                <li><strong>Communication & PPP</strong> : Design d'interface utilisateur claire</li>
+                <li><strong>Automatisme & Informatique industrielle</strong> : IHM, affichage temps réel</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h3>📋 Section 10: Menu interactif et sélection</h3>
+        <pre><code>void showMenu(void) {
+    uint8_t paletteIndex = 0;
+    bool confirmed = false;
+    level = 1;
+    
+    const char* paletteNames[] = {
+        "Classique", "Jul", "Pastel", "Ocean", "Feu"
+    };
+    
+    while (!confirmed) {
+        if (refresh) {
+            fillScreen(ILI9341_BLACK);
+            drawText(60, 20, "Choix du Niveau", ILI9341_WHITE);
+            // ... affichage menu
+        }
+        
+        // Gestion boutons
+        if (BP_B_GetValue() == 0 && level < 9) level++;
+        if (BP_D_GetValue() == 0 && level > 1) level--;
+        if (BP_C_GetValue() == 0) {
+            paletteIndex = (paletteIndex + 1) % 5;
+            currentPalette = (PaletteType)paletteIndex;
+        }
+        if (BP_A_GetValue() == 0) confirmed = true;
+    }
+}</code></pre>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Menu</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="images/Sae snake/menu.jpg" alt="Menu"></td>
+                    <td><img src="images/Sae snake/IMG_0693.jpg" alt="Image menu"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="content-box">
+            <p><strong>💡 Explication :</strong></p>
+            <ul>
+                <li>Menu de configuration complet avec boutons physiques</li>
+                <li>Système de navigation intuitive</li>
+                <li>Personnalisation du gameplay (niveau, palette)</li>
+            </ul>
+            <p><strong>🎯 Lien compétences :</strong></p>
+            <ul>
+                <li><strong>Communication & PPP</strong> : Interface utilisateur ergonomique</li>
+                <li><strong>Automatisme & Informatique industrielle</strong> : Gestion des entrées, configuration système</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h3>🔄 Section 11: Boucle principale et états de jeu</h3>
+        <pre><code>void main(void) {
+    // Initialisation système
+    SYSTEM_Initialize();
+    SPI1_Open(SPI1_DEFAULT);
+    tft_begin();
+    
+    // Séquence de démarrage
+    showIntroScreen();
+    showMenu();
+    
+    // Boucle principale
+    while (1) {
+        // Gestion pause
+        if (BP_E_GetValue() == 0) {
+            isPaused = !isPaused;
+            // ...
+        }
+        
+        if (!isPaused) {
+            updatePaddle();
+            updateBall();
+            
+            // Conditions de victoire/défaite
+            if (allDestroyed) {
+                playVictoryMelody();
+                // Reset niveau suivant
+            }
+            if (lives == 0) {
+                playGameOverMelody();
+                // Retour menu
+            }
+        }
+        
+        __delay_ms(16); // ~60 FPS
+    }
+}</code></pre>
+
+        <p><strong>Voici le lien vers une vidéo illustrative :</strong></p>
+        <div class="content-box">
+            <p><a href="https://youtube.com/shorts/vCBqcKI-Fcc?feature=share" target="_blank" style="color: #00bfff;">- Vidéo 2</a></p>
+        </div>
+
+        <div class="content-box">
+            <p><strong>💡 Explication :</strong></p>
+            <ul>
+                <li>Architecture en machine à états (intro→menu→jeu→fin)</li>
+                <li>Boucle de jeu optimisée à ~60 FPS</li>
+                <li>Gestion complète du cycle de vie du jeu</li>
+            </ul>
+            <p><strong>🎯 Lien compétences :</strong></p>
+            <ul>
+                <li><strong>Automatisme & Informatique industrielle</strong> : Architecture logicielle, temps réel</li>
+                <li><strong>Communication & PPP</strong> : Expérience utilisateur fluide</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h2>📚 Synthèse des compétences développées</h2>
+
+        <h3>🧮 Mathématiques & Physique appliquée</h3>
+        <div class="content-box">
+            <ul>
+                <li>✅ Calculs de positions et collisions rectangulaires</li>
+                <li>✅ Génération de fréquences audio (NCO)</li>
+                <li>✅ Algorithmes de motifs géométriques</li>
+                <li>✅ Gestion des vecteurs vitesse/direction</li>
+            </ul>
+        </div>
+
+        <h3>⚙️ Automatisme & Informatique industrielle</h3>
+        <div class="content-box">
+            <ul>
+                <li>✅ Programmation microcontrôleur PIC en C</li>
+                <li>✅ Gestion temps réel (boucle 60 FPS)</li>
+                <li>✅ Interface avec périphériques (ADC, SPI, GPIO)</li>
+                <li>✅ Architecture logicielle modulaire</li>
+            </ul>
+        </div>
+
+        <h3>🔌 Électronique & Systèmes embarqués</h3>
+        <div class="content-box">
+            <ul>
+                <li>✅ Interface écran TFT via SPI</li>
+                <li>✅ Lecture capteurs analogiques (joystick)</li>
+                <li>✅ Génération audio par NCO</li>
+                <li>✅ Gestion des entrées numériques (boutons pull-up)</li>
+            </ul>
+        </div>
+
+        <h3>💬 Communication & PPP</h3>
+        <div class="content-box">
+            <ul>
+                <li>✅ Code documenté et structuré</li>
+                <li>✅ Interface utilisateur intuitive</li>
+                <li>✅ Menu de configuration ergonomique</li>
+                <li>✅ Expérience de jeu engageante</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h2>🌟 Points forts du projet</h2>
+        <div class="content-box">
+            <ol>
+                <li><strong>Intégration complète</strong> : Audio, vidéo, contrôles, tout fonctionne ensemble</li>
+                <li><strong>Code modulaire</strong> : Fonctions bien séparées, réutilisables</li>
+                <li><strong>Interface riche</strong> : Menus, palettes, niveaux progressifs</li>
+                <li><strong>Optimisation</strong> : Gestion efficace de l'affichage et des ressources</li>
+                <li><strong>Gameplay varié</strong> : Différents patterns de briques, difficulté croissante</li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <h2>🎯 Apprentissage critique démontré</h2>
+        <div class="content-box">
+            <p><strong>✅ Transformation cahier des charges → code fonctionnel</strong></p>
+            <ul>
+                <li>Analyse des besoins du jeu Arkanoid</li>
+                <li>Implémentation de toutes les fonctionnalités demandées</li>
+            </ul>
+
+            <p><strong>✅ Débogage et correction</strong></p>
+            <ul>
+                <li>Gestion des collisions complexes</li>
+                <li>Optimisation de l'affichage pour éviter les scintillements</li>
+                <li>Calibrage des seuils du joystick analogique</li>
+            </ul>
+
+            <p><strong>✅ Intégration matériel/logiciel</strong></p>
+            <ul>
+                <li>Maîtrise de l'écosystème MPLAB X / MCC</li>
+                <li>Interface avec multiples périphériques simultanément</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h2>⚠️ Problèmes rencontrés et solutions</h2>
+        <div class="content-box">
+            <ul>
+                <li>Ajustement des dimensions du boîtier après la première impression 3D.</li>
+                <li>Mauvais câblage initial du PCB : correction après analyse du schéma.</li>
+                <li>Problème de brasage du PCB (surchauffe, détérioration) : recommencer le brasage.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h2>🎓 Compétences développées</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Matière</th>
+                    <th>Compétence développée</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Automatisme & Informatique industrielle</td>
+                    <td>Organisation de projet, programmation microcontrôleur</td>
+                </tr>
+                <tr>
+                    <td>Électronique & Systèmes embarqués</td>
+                    <td>Schéma, routage, conception PCB</td>
+                </tr>
+                <tr>
+                    <td>Mathématiques & Physique appliquée</td>
+                    <td>Calculs dimensionnels, ajustements de mesures</td>
+                </tr>
+                <tr>
+                    <td>Communication & PPP</td>
+                    <td>Argumentation, justification technique</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <script>
+        // ===== NAVIGATION SCROLL =====
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(15, 32, 39, 0.98)';
+            } else {
+                navbar.style.background = 'linear-gradient(135deg, rgba(15, 32, 39, 0.95), rgba(44, 83, 100, 0.95))';
+            }
+        });
+
+        // ===== HAMBURGER MENU =====
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>

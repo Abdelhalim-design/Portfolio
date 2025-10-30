@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérifier - SAE Snake | Portfolio GEII</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding-top: 80px;
+            line-height: 1.6;
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(15, 32, 39, 0.95), rgba(44, 83, 100, 0.95));
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(0, 191, 255, 0.5);
+            box-shadow: 0 4px 20px rgba(0, 191, 255, 0.3);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .nav-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00bfff;
+            text-shadow: 0 0 20px rgba(0, 191, 255, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-logo::before {
+            content: '⚡';
+            font-size: 1.8rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+        }
+
+        .nav-menu > li > a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.2rem;
+            color: rgba(0, 191, 255, 0.9);
+            text-decoration: none;
+            border-radius: 8px;
+            background: rgba(0, 191, 255, 0.05);
+            border: 1px solid rgba(0, 191, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu > li > a.active {
+            background: rgba(0, 191, 255, 0.15);
+            color: #00ffff;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #00bfff;
+            border-radius: 3px;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* ===== TITLES ===== */
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00ffff;
+            font-size: 2.5rem;
+            text-align: center;
+            border-bottom: 4px solid #00bfff;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00ffff;
+            font-size: 2rem;
+            margin-top: 50px;
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 5px solid #00bfff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+        }
+
+        h3 {
+            color: #00bfff;
+            font-size: 1.5rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 191, 255, 0.4);
+        }
+
+        h4 {
+            color: #00bfff;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* ===== IMAGES ===== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 2px solid rgba(0, 191, 255, 0.4);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 191, 255, 0.3);
+            margin: 20px auto;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 255, 255, 0.5);
+        }
+
+        /* ===== TABLES ===== */
+        table {
+            width: 100%;
+            background: rgba(15, 32, 39, 0.8);
+            border: 2px solid rgba(0, 191, 255, 0.3);
+            border-radius: 10px;
+            margin: 20px 0;
+            border-collapse: collapse;
+            overflow: hidden;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #0f2027, #2c5364);
+        }
+
+        th {
+            color: #00ffff;
+            font-weight: bold;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            color: #e0e0e0;
+            padding: 12px;
+            border-bottom: 1px solid rgba(0, 191, 255, 0.2);
+        }
+
+        tr:hover {
+            background: rgba(0, 191, 255, 0.1);
+        }
+
+        /* ===== CONTENT BOX ===== */
+        .content-box {
+            background: rgba(0, 191, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #00bfff;
+            box-shadow: 0 3px 15px rgba(0, 191, 255, 0.2);
+        }
+
+        /* ===== CODE ===== */
+        pre {
+            background: #0f2027;
+            border: 1px solid rgba(0, 191, 255, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        code {
+            color: #00bfff;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* ===== HR ===== */
+        hr {
+            border: none;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00bfff, transparent);
+            margin: 40px 0;
+        }
+
+        /* ===== INTRO BOX ===== */
+        .intro-box {
+            background: linear-gradient(135deg, rgba(0, 191, 255, 0.15) 0%, rgba(0, 255, 255, 0.1) 100%);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(0, 191, 255, 0.5);
+            box-shadow: 0 0 30px rgba(0, 191, 255, 0.2);
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">Portfolio GEII</a>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">🏠 Accueil</a></li>
+                <li><a href="referenciel.html">📊 Référentiel</a></li>
+                <li><a href="#" class="active">📚 Projets</a></li>
+                <li><a href="#">💼 Expérience</a></li>
+                <li><a href="contact.html">📞 Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ===== CONTAINER ===== -->
+    <div class="container">
+        
+        <h1>🔍 Compétence : Vérifier - SAE Snake/Arkanoid</h1>
+
+        <div class="intro-box">
+            <h3>🔸 Contexte</h3>
+            <p>Une fois la conception terminée, il a fallu tester et valider le fonctionnement du projet pour garantir la conformité aux attentes et aux contraintes techniques du cahier des charges.</p>
+        </div>
+
+        <h2>🔸 Activités réalisées</h2>
+
+        <h3>🧪 Tests du PCB et du câblage</h3>
+        <div class="content-box">
+            <ul>
+                <li>Réalisation du test de continuité entre les composants après le brasage.</li>
+                <li>Vérification de l'alimentation correcte de chaque composant.</li>
+                <li>Correction des erreurs (ex. inversion de connecteurs) par débrasure et ressoudage.</li>
+                <li>Test final sur MPLAB X</li>
+            </ul>
+        </div>
+
+        <p><strong>Test de continuité :</strong></p>
+        <img src="images/Sae snake/Test_de_continuiter.png" alt="Test de continuité">
+
+        <h4>⚠️ Problème rencontré</h4>
+        <div class="content-box">
+            <p><strong>Problème :</strong> Faux contact avec les connectiques</p>
+            <p><strong>Solution mise en œuvre :</strong> Rebraser les connexions défectueuses</p>
+        </div>
+
+        <h4>🎵 Test final sur MPLAB X pour tester le son :</h4>
+        <pre><code>#include "mcc_generated_files/mcc.h"
+int music[12]={102,108,115,121,129,136,145,153,162,172,182,193};
+
+static int i=0;
+void main(void)
+{
+    // initialize the device
+    SYSTEM_Initialize();
+
+    while (1)
+    {
+        // Add your application code
+        if (i>12)
+            i=0;
+        i++;
+        NCO1INC = ((5 + music[i] * 1.28)/4);
+        __delay_ms(200);    
+    }
+}</code></pre>
+
+        <div class="content-box">
+            <p><strong>Apprentissage critique :</strong></p>
+            <ul>
+                <li>Savoir vérifier la conformité électrique et mécanique d'un circuit.</li>
+                <li>Identifier et corriger les erreurs de brasage ou de câblage.</li>
+            </ul>
+            <p><strong>Lien avec les matières :</strong></p>
+            <ul>
+                <li><strong>Énergie, Électronique</strong> : tests de continuité, validation des circuits.</li>
+                <li><strong>Informatique & Systèmes embarqués</strong> : vérification du routage et du câblage.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h3>🖥️ Tests fonctionnels du jeu</h3>
+        <div class="content-box">
+            <ul>
+                <li>Vérification de l'affichage (écran rouge, test des formes et des briques).</li>
+                <li>Tests des boutons poussoirs (déplacement du carré, réactivité des entrées).</li>
+                <li>Test final du jeu Arkanoid avec les contrôles intégrés.</li>
+            </ul>
+        </div>
+
+        <div class="content-box">
+            <p><strong>Apprentissage critique :</strong></p>
+            <ul>
+                <li>Vérifier le respect des fonctionnalités définies dans le cahier des charges.</li>
+                <li>Tester le code et ajuster la programmation en fonction des résultats.</li>
+            </ul>
+            <p><strong>Lien avec les matières :</strong></p>
+            <ul>
+                <li><strong>Automatisme & Informatique industrielle</strong> : tests fonctionnels, débogage du code.</li>
+                <li><strong>Mathématiques</strong> : validation des coordonnées et des mouvements du jeu.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h3>🛠️ Débogage du projet et problème de compilation</h3>
+        <div class="content-box">
+            <ul>
+                <li>Après une mauvaise manipulation, le projet MPLAB X a été supprimé par erreur, ce qui a entraîné la perte du fichier <strong>Makefile</strong> indispensable à la compilation.</li>
+                <li>Impossible de <strong>build</strong> ou d'accéder au <strong>compilateur MCC</strong> sans ce fichier.</li>
+                <li>Récupération manuelle du fichier <strong>Makefile</strong> à partir d'une ancienne sauvegarde.</li>
+                <li>Nécessité de <strong>réinitialiser le projet</strong> dans MPLAB X et de <strong>reconfigurer le build system</strong> pour retrouver une compilation fonctionnelle.</li>
+            </ul>
+        </div>
+
+        <img src="images/Sae snake/Capture d'écran 2025-06-03 223950.png" alt="Erreur de compilation">
+        <img src="images/Sae snake/Capture d'écran 2025-06-03 222604.png" alt="BUILD">
+
+        <div class="content-box">
+            <p><strong>Apprentissage critique :</strong></p>
+            <ul>
+                <li>Comprendre le rôle du fichier Makefile dans un projet compilé.</li>
+                <li>Savoir récupérer un projet supprimé ou corrompu.</li>
+                <li>Mettre à jour les paramètres de compilation et les configurations dans MPLAB X.</li>
+                <li>Résoudre un blocage lié à l'environnement de développement.</li>
+            </ul>
+            <p><strong>Lien avec les matières :</strong></p>
+            <ul>
+                <li><strong>Informatique industrielle</strong> : gestion d'un environnement de développement, build system, makefile, configuration du compilateur.</li>
+                <li><strong>Gestion de projet / Outils numériques</strong> : prévention des pertes de données, gestion des versions, travail avec des sauvegardes.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h3>🧩 Intégration finale</h3>
+        <div class="content-box">
+            <ul>
+                <li>Assemblage du PCB et des composants dans le boîtier imprimé.</li>
+                <li>Vérification de la bonne fixation mécanique et de la fermeture vissée.</li>
+                <li>Tests d'utilisation complète (fonctionnement du jeu, commandes, alimentation).</li>
+            </ul>
+        </div>
+
+        <div class="content-box">
+            <p><strong>Apprentissage critique :</strong></p>
+            <ul>
+                <li>Importance de l'intégration mécanique et de l'ergonomie du produit fini.</li>
+                <li>Validation finale de la conformité entre le prototype et les attentes.</li>
+            </ul>
+            <p><strong>Lien avec les matières :</strong></p>
+            <ul>
+                <li><strong>Vie d'entreprise</strong> : rigueur dans l'assemblage, respect des délais.</li>
+                <li><strong>Communication & PPP</strong> : présentation du produit final, démonstration orale.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h2>🏆 Compétences développées</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Matière</th>
+                    <th>Compétence développée</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Physique appliquée</td>
+                    <td>Validation des circuits électriques</td>
+                </tr>
+                <tr>
+                    <td>Électronique & Systèmes embarqués</td>
+                    <td>Tests de continuité, validation des fonctionnalités</td>
+                </tr>
+                <tr>
+                    <td>Automatisme & Informatique industrielle</td>
+                    <td>Tests fonctionnels, vérification du code</td>
+                </tr>
+                <tr>
+                    <td>Communication & PPP</td>
+                    <td>Présentation orale des résultats, argumentation technique</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr>
+
+        <h2>🧪 Tests fonctionnels initiaux</h2>
+
+        <h3>🔴 Premier test : affichage écran rouge</h3>
+        <p><strong>Objectif :</strong> Vérifier que l'écran est correctement câblé et fonctionnel.</p>
+
+        <h4>📺 Programmation de l'écran TFT</h4>
+        <p>Voici le premier test d'affichage d'un écran rouge :</p>
+
+        <pre><code>#include "mcc_generated_files/mcc.h"
+#include "ILI9341.h"
+#include "GFX_Library.h"
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+
+void main(void)
+{
+    int n=0, button;
+    time_t toc;
+    SYSTEM_Initialize();
+    SPI1_Open(SPI1_DEFAULT);
+    tft_begin();
+    time(&toc);
+    srand((int)toc);
+    fillScreen(ILI9341_RED);
+    while(1) { }
+}</code></pre>
+
+        <hr>
+
+        <h3>🧱 Affichage de formes et briques</h3>
+        <h4>🧪 Test de dessin de briques</h4>
+
+        <pre><code>// Code pour afficher une image (brique) aléatoirement sur l'écran
+void main(void) 
+{
+    while (1) {
+        pos_x = rand() % (240-33);
+        pos_y = rand() % (320-32);
+
+        for (x = 0; x &lt; 33; x++) {
+            for (y = 0; y &lt; 32; y++) {
+                drawPixel(x + pos_x, y + pos_y, (uint16_t)(TEST_IMAGE[x * 32 + y]));
+            }
+        }
+    }
+}</code></pre>
+
+        <hr>
+
+        <h3>🎮 Mise en place des contrôles : Boutons poussoirs</h3>
+        <h4>Test du déplacement d'un carré avec boutons :</h4>
+
+        <p>Ce code permet de déplacer un carré à l'écran selon l'entrée des boutons configurés en numérique avec résistances pull-up.</p>
+
+        <pre><code>#include "mcc_generated_files/mcc.h"
+#include "ILI9341.h"
+#include "GFX_Library.h"
+
+#define SQUARE_SIZE 10
+
+uint16_t squareX = 100;
+uint16_t squareY = 100;
+
+void drawSquare(uint16_t x, uint16_t y, uint16_t color) {
+    fillRect(x, y, SQUARE_SIZE, SQUARE_SIZE, color);
+}
+
+void main(void) {
+    SYSTEM_Initialize();
+    SPI1_Open(SPI1_DEFAULT);
+    tft_begin();
+    setRotation(1);
+    fillScreen(ILI9341_BLACK);
+
+    // Configuration des boutons
+    BP_A_SetDigitalInput();
+    BP_B_SetDigitalInput();
+    BP_C_SetDigitalInput();
+    BP_D_SetDigitalInput();
+    BP_A_SetPullup();
+    BP_B_SetPullup();
+    BP_C_SetPullup();
+    BP_D_SetPullup();
+
+    drawSquare(squareX, squareY, ILI9341_WHITE);
+
+    while (1) {
+        drawSquare(squareX, squareY, ILI9341_BLACK);
+
+        if (BP_A_GetValue() == 0 && squareY &gt; 0) {
+            squareY -= 5;
+        }
+        if (BP_B_GetValue() == 0 && squareX &lt; 240 - SQUARE_SIZE) {
+            squareX += 5;
+        }
+        if (BP_C_GetValue() == 0 && squareY &lt; 320 - SQUARE_SIZE) {
+            squareY += 5;
+        }
+        if (BP_D_GetValue() == 0 && squareX &gt; 0) {
+            squareX -= 5;
+        }
+
+        drawSquare(squareX, squareY, ILI9341_WHITE);
+        __delay_ms(100);
+    }
+}</code></pre>
+
+        <p><strong>Objectif :</strong> Tester le fonctionnement des boutons à l'aide du code.</p>
+
+        <hr>
+
+        <h3>🎯 Intégration des boutons dans le jeu</h3>
+        <p>Ce code permet de déplacer le carré dans le jeu à l'aide des boutons, maintenant bien configurés.</p>
+
+        <pre><code>#include "mcc_generated_files/mcc.h"
+#include "ILI9341.h"
+#include "GFX_Library.h"
+
+#define SQUARE_SIZE 10
+
+uint16_t squareX = 100;
+uint16_t squareY = 100;
+
+void drawSquare(uint16_t x, uint16_t y, uint16_t color) {
+    fillRect(x, y, SQUARE_SIZE, SQUARE_SIZE, color);
+}
+
+void main(void) {
+    SYSTEM_Initialize();
+    SPI1_Open(SPI1_DEFAULT);
+    tft_begin();
+    setRotation(1);
+    fillScreen(ILI9341_BLACK);
+
+    BP_A_SetDigitalInput();
+    BP_B_SetDigitalInput();
+    BP_C_SetDigitalInput();
+    BP_D_SetDigitalInput();
+    BP_A_SetPullup();
+    BP_B_SetPullup();
+    BP_C_SetPullup();
+    BP_D_SetPullup();
+
+    drawSquare(squareX, squareY, ILI9341_WHITE);
+
+    while (1) {
+        drawSquare(squareX, squareY, ILI9341_BLACK);
+
+        if (BP_A_GetValue() == 0 && squareY &gt; 0) {
+            squareY -= 5;
+        }
+        if (BP_B_GetValue() == 0 && squareX &lt; 240 - SQUARE_SIZE) {
+            squareX += 5;
+        }
+        if (BP_C_GetValue() == 0 && squareY &lt; 320 - SQUARE_SIZE) {
+            squareY += 5;
+        }
+        if (BP_D_GetValue() == 0 && squareX &gt; 0) {
+            squareX -= 5;
+        }
+
+        drawSquare(squareX, squareY, ILI9341_WHITE);
+        __delay_ms(100);
+    }
+}</code></pre>
+
+        <hr>
+
+        <h2>🎓 Compétences développées</h2>
+        <div class="content-box">
+            <ul>
+                <li><strong>Conception électronique et mécanique</strong> (KiCad / SolidWorks)</li>
+                <li><strong>Programmation microcontrôleur</strong> (PIC / MPLAB X)</li>
+                <li><strong>Tests et validation</strong> (protocole de tests, débogage)</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(15, 32, 39, 0.98)';
+            }
+        });
+    </script>
+</body>
+</html>

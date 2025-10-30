@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAE Moteur de Drone | Portfolio GEII</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding-top: 80px;
+            line-height: 1.6;
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(15, 32, 39, 0.95), rgba(44, 83, 100, 0.95));
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(0, 191, 255, 0.5);
+            box-shadow: 0 4px 20px rgba(0, 191, 255, 0.3);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .nav-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00bfff;
+            text-shadow: 0 0 20px rgba(0, 191, 255, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-logo::before {
+            content: '⚡';
+            font-size: 1.8rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+        }
+
+        .nav-menu > li > a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.2rem;
+            color: rgba(0, 191, 255, 0.9);
+            text-decoration: none;
+            border-radius: 8px;
+            background: rgba(0, 191, 255, 0.05);
+            border: 1px solid rgba(0, 191, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu > li > a.active {
+            background: rgba(0, 191, 255, 0.15);
+            color: #00ffff;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* ===== TITLES ===== */
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00ffff;
+            font-size: 2.5rem;
+            text-align: center;
+            border-bottom: 4px solid #00bfff;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00ffff;
+            font-size: 2rem;
+            margin-top: 50px;
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 5px solid #00bfff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+        }
+
+        h3 {
+            color: #00bfff;
+            font-size: 1.5rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 191, 255, 0.4);
+        }
+
+        /* ===== INTRO BOX ===== */
+        .intro-box {
+            background: linear-gradient(135deg, rgba(0, 191, 255, 0.15) 0%, rgba(0, 255, 255, 0.1) 100%);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(0, 191, 255, 0.5);
+            box-shadow: 0 0 30px rgba(0, 191, 255, 0.2);
+        }
+
+        /* ===== TWO COLUMNS ===== */
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .column-box {
+            background: rgba(0, 191, 255, 0.05);
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 191, 255, 0.3);
+            box-shadow: 0 3px 15px rgba(0, 191, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .column-box:hover {
+            border-color: rgba(0, 255, 255, 0.5);
+            box-shadow: 0 5px 25px rgba(0, 191, 255, 0.4);
+            transform: translateY(-3px);
+        }
+
+        /* ===== TABLES ===== */
+        table {
+            width: 100%;
+            background: rgba(15, 32, 39, 0.8);
+            border: 2px solid rgba(0, 191, 255, 0.3);
+            border-radius: 10px;
+            margin: 20px 0;
+            border-collapse: collapse;
+            overflow: hidden;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #0f2027, #2c5364);
+        }
+
+        th {
+            color: #00ffff;
+            font-weight: bold;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            color: #e0e0e0;
+            padding: 12px;
+            border-bottom: 1px solid rgba(0, 191, 255, 0.2);
+        }
+
+        tr:hover {
+            background: rgba(0, 191, 255, 0.1);
+        }
+
+        /* ===== IMAGES ===== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 2px solid rgba(0, 191, 255, 0.4);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 191, 255, 0.3);
+            margin: 20px auto;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 255, 255, 0.5);
+        }
+
+        /* ===== CONTENT BOX ===== */
+        .content-box {
+            background: rgba(0, 191, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #00bfff;
+            box-shadow: 0 3px 15px rgba(0, 191, 255, 0.2);
+        }
+
+        /* ===== BLOCKQUOTE ===== */
+        blockquote {
+            background: rgba(0, 191, 255, 0.1);
+            border-left: 4px solid #00ffff;
+            padding: 15px 20px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #00ffff;
+        }
+
+        /* ===== DETAILS ===== */
+        details {
+            background: rgba(0, 191, 255, 0.05);
+            border: 1px solid rgba(0, 191, 255, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        summary {
+            background: linear-gradient(135deg, rgba(0, 191, 255, 0.2), rgba(0, 255, 255, 0.1));
+            color: #00ffff;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid rgba(0, 191, 255, 0.4);
+            text-shadow: 0 0 5px rgba(0, 191, 255, 0.5);
+            transition: all 0.3s ease;
+            list-style: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::before {
+            content: '▶ ';
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        summary:hover {
+            background: linear-gradient(135deg, rgba(0, 191, 255, 0.3), rgba(0, 255, 255, 0.2));
+            border-color: #00ffff;
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.4);
+            transform: translateX(5px);
+        }
+
+        /* ===== BADGE ===== */
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(0, 191, 255, 0.3), rgba(0, 255, 255, 0.2));
+            color: #00ffff;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            margin: 5px;
+            border: 1px solid rgba(0, 191, 255, 0.5);
+        }
+
+        /* ===== HR ===== */
+        hr {
+            border: none;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00bfff, transparent);
+            margin: 40px 0;
+        }
+
+        /* ===== BILAN ===== */
+        .bilan-section {
+            background: linear-gradient(135deg, rgba(0, 191, 255, 0.2) 0%, rgba(0, 255, 255, 0.15) 100%);
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 40px;
+            box-shadow: 0 5px 30px rgba(0, 191, 255, 0.3);
+            border: 2px solid rgba(0, 191, 255, 0.5);
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .two-columns { grid-template-columns: 1fr; }
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">Portfolio GEII</a>
+            <ul class="nav-menu">
+                <li><a href="index.html">🏠 Accueil</a></li>
+                <li><a href="referenciel.html">📊 Référentiel</a></li>
+                <li><a href="#" class="active">📚 Projets</a></li>
+                <li><a href="#">💼 Expérience</a></li>
+                <li><a href="contact.html">📞 Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <h1>🚁 Portfolio SAE – Conception et Réalisation d'un Moteur de Drone</h1>
+
+        <div class="intro-box">
+            <h2>🎯 Introduction</h2>
+            <p>Cette SAÉ avait pour but de <strong>concevoir, bobiner, modéliser et tester un moteur de drone</strong> fonctionnant avec un stator bobiné et un rotor aimanté, tout en respectant une logique de fabrication artisanale et de validation expérimentale.</p>
+            <p>Projet réalisé en binôme avec <strong>Clément Durand</strong>, encadré par <strong>M. Talierco</strong>.</p>
+        </div>
+
+        <hr>
+
+        <div class="two-columns">
+            <div class="column-box">
+                <h2>🎓 Objectifs pédagogiques</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Compétence</th>
+                            <th>Description</th>
+                            <th>Apprentissage Critique</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>C1a</strong></td><td>Produire une analyse fonctionnelle</td><td>Identifier les écarts fabrication/théorie</td></tr>
+                        <tr><td><strong>C1b</strong></td><td>Réaliser un prototype</td><td>Bobinage, modélisation SolidWorks</td></tr>
+                        <tr><td><strong>C1c</strong></td><td>Documenter la fabrication</td><td>Estimations, relevés, modèles 3D</td></tr>
+                        <tr><td><strong>C2a</strong></td><td>Tester le fonctionnement</td><td>Test résistance, inductance, équilibrage</td></tr>
+                        <tr><td><strong>C2b</strong></td><td>Valider les performances</td><td>Vérification fréquence de coupure, phase</td></tr>
+                        <tr><td><strong>C2c</strong></td><td>Corriger un défaut</td><td>Résolution de problème sur brasage & déphasage</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="column-box">
+                <h2>📚 Matières mobilisées</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Matière</th>
+                            <th>Apport dans le projet</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Électronique</strong></td><td>Bobinage, mesure résistance, inductance</td></tr>
+                        <tr><td><strong>CAO</strong></td><td>Modélisation 3D des pièces avec SolidWorks</td></tr>
+                        <tr><td><strong>Électricité</strong></td><td>Mesures sur oscilloscope, filtres RL</td></tr>
+                        <tr><td><strong>Physique appliquée</strong></td><td>Fréquence de coupure, modélisation</td></tr>
+                        <tr><td><strong>Méthodologie projet</strong></td><td>Planification, documentation, résolution de problèmes</td></tr>
+                        <tr><td><strong>Informatique / Simulation</strong></td><td>Simulation PWM avec PSIM</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <hr>
+
+        <h2>🔧 Conception du moteur</h2>
+
+        <h3>🖥️ Modélisation 3D avec SolidWorks</h3>
+        
+        <div class="content-box">
+            <p><span class="badge">Compétence : C1b – Réaliser un prototype</span></p>
+            <p><span class="badge">Apprentissage critique : Reproduire avec précision les pièces du moteur selon les plans</span></p>
+            <p><span class="badge">Matières mobilisées : CAO, Mécanique</span></p>
+        </div>
+
+        <div class="content-box">
+            <ul>
+                <li>Modélisation du <strong>rotor</strong>, du <strong>stator</strong>, et des pièces structurelles.</li>
+                <li>Création de cotes exactes pour assurer <strong>compatibilité et ajustement</strong>.</li>
+                <li>Assemblage global du moteur simulé dans SolidWorks.</li>
+            </ul>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Mise en Plan Rotor</th>
+                    <th>Mise en Plan Stator</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="images/sae robot/sae motorisation de drone/misen plan stator.png" alt="Mise en plan rotor"></td>
+                    <td><img src="images/sae robot/sae motorisation de drone/mise en plan statorpng.png" alt="Mise en plan stator"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr>
+
+        <h3>📏 Relevés mécaniques & ajustements</h3>
+        <p>Après impression 3D, j'ai effectué <strong>des relevés réels et comparé aux plans CAO</strong>. Cela m'a permis de voir si les pièces étaient conformes, et de comprendre les écarts de fabrication.</p>
+
+        <blockquote>
+            📝 <em>Cela m'a appris à anticiper les tolérances de fabrication et à ajuster mes choix en conséquence.</em>
+        </blockquote>
+
+        <div class="content-box">
+            <p><span class="badge">Compétence : C1a – Analyse fonctionnelle</span></p>
+            <p><span class="badge">Apprentissage critique : Identifier les écarts entre conception et réalité</span></p>
+            <p><span class="badge">Matières mobilisées : Physique appliquée, Fabrication</span></p>
+        </div>
+
+        <div class="content-box">
+            <ul>
+                <li>Comparaison entre dimensions <strong>théoriques</strong> issues de la CAO et <strong>réelles</strong> (après impression 3D).</li>
+                <li>Identification d'écarts critiques sur les diamètres, cercles et supports d'aimants.</li>
+                <li>Ajustements manuels réalisés (lime, repositionnements).</li>
+            </ul>
+        </div>
+
+        <div class="two-columns">
+            <div class="column-box">
+                <h3>🌀 Rotor – Valeurs théoriques vs réelles</h3>
+                <table>
+                    <thead><tr><th>Caractéristique</th><th>Théorique</th><th>Pratique</th></tr></thead>
+                    <tbody>
+                        <tr><td>Épaisseur emplacement aimant</td><td>8 mm</td><td>7,5 mm</td></tr>
+                        <tr><td>Épaisseur rotor</td><td>10 cm</td><td>10 cm</td></tr>
+                        <tr><td>Support du rotor</td><td>10 mm</td><td>9,5 mm</td></tr>
+                        <tr><td>Diamètre rotor</td><td>65 mm</td><td>64 mm</td></tr>
+                        <tr><td>Trou central</td><td>—</td><td>15,1 mm</td></tr>
+                        <tr><td>Distance cercle central → aimant</td><td>9,5 mm</td><td>—</td></tr>
+                        <tr><td>Cercle intérieur (aimant)</td><td>3 mm</td><td>2,5 mm</td></tr>
+                        <tr><td>Cercle central</td><td>6 mm</td><td>5,9 mm</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="column-box">
+                <h3>⚙️ Stator – Valeurs théoriques vs réelles</h3>
+                <table>
+                    <thead><tr><th>Caractéristique</th><th>Théorique</th><th>Pratique</th></tr></thead>
+                    <tbody>
+                        <tr><td>Épaisseur</td><td>10 mm</td><td>10 mm</td></tr>
+                        <tr><td>Diamètre</td><td>84 mm</td><td>84 mm</td></tr>
+                        <tr><td>Cercle central</td><td>7 mm</td><td>7 mm</td></tr>
+                        <tr><td>Cercles sur pieds</td><td>3 mm</td><td>3 mm</td></tr>
+                        <tr><td>Longueur pied stator</td><td>—</td><td>100 mm</td></tr>
+                        <tr><td>Angle des spires</td><td>40°</td><td>40°</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <blockquote>
+            📝 <em>Les écarts proviennent de la tolérance d'impression 3D et de l'usinage manuel.</em>
+        </blockquote>
+
+        <hr>
+
+        <h3>🧲 Montage des aimants</h3>
+        <p>Une fois les pièces ajustées, j'ai procédé au <strong>montage des aimants selon leur polarité</strong> et au <strong>bobinage du stator</strong>. Ces deux étapes sont cruciales car elles conditionnent le bon fonctionnement magnétique et électrique du moteur.</p>
+
+        <div class="content-box">
+            <p><span class="badge">Compétence : C1b</span></p>
+            <p><span class="badge">Apprentissage critique : Respecter la polarité et assurer un bon équilibrage</span></p>
+            <p><span class="badge">Matières : Électronique, Physique appliquée</span></p>
+        </div>
+
+        <div class="content-box">
+            <ul>
+                <li>Disposition en alternance Nord / Sud.</li>
+                <li>Utilisation d'un aimant de référence pour les polarités.</li>
+                <li>Outils spécifiques pour insérer et retirer sans dommage.</li>
+            </ul>
+        </div>
+
+        <img src="images/sae robot/sae motorisation de drone/Aiment.png" alt="Aimants">
+
+        <p><strong>📌 Outils utilisés :</strong></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Image 1</th>
+                    <th>Image 2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="images/Outillage.png" alt="Outillage 1"></td>
+                    <td><img src="images/sae motorisation de drone/outillage.jpg" alt="Outillage 2"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <blockquote>
+            🛠️ <em>Cette étape a nécessité de la minutie et de la rigueur manuelle pour éviter les erreurs de champ magnétique.</em>
+        </blockquote>
+
+        <hr>
+
+        <h2>🔌 Bobinage et Calculs Expérimentaux</h2>
+
+        <h3>📐 Estimation de la longueur totale de fil</h3>
+
+        <div class="content-box">
+            <p><span class="badge">Compétence : C1c – Documenter la fabrication</span></p>
+            <p><span class="badge">Apprentissage critique : Estimer, anticiper les besoins en matériaux</span></p>
+            <p><span class="badge">Matière : Électronique</span></p>
+        </div>
+
+        <div class="content-box">
+            <ul>
+                <li>Objectif : estimer la longueur de fil nécessaire pour les bobines.</li>
+                <li>Méthode : calcul du périmètre d'enroulement, nombre de tours, couches, et bobines.</li>
+                <li>Résultat : <strong>~12 mètres de fil</strong> pour l'ensemble du moteur.</li>
+            </ul>
+        </div>
+
+        <details>
+            <summary><strong>📐 Calcul estimatif de la longueur de fil (cliquer pour voir)</strong></summary>
+            <div class="content-box" style="margin-top: 15px;">
+                <p><strong>Formule utilisée :</strong> périmètre = 2 × π × rayon</p>
+                <p><strong>Rayon moyen :</strong> 75 mm ÷ 2 = 37,5 mm</p>
+                <ul>
+                    <li>Périmètre complet : 2 × π × 37,5 ≈ 235,62 mm</li>
+                    <li>Demi-périmètre (cas pratique) ≈ 117,81 mm</li>
+                    <li>Longueur additionnelle par couche : 24,24 + 21,06 + 12,51 + 21,06 = 78,87 mm</li>
+                    <li>Nombre de tours : 24</li>
+                    <li>Longueur d'une bobine : 117,81 + (78,87 × 24) ≈ 2010,68 mm</li>
+                    <li>Pour 6 bobines : 2010,68 × 6 = <strong>12 064 mm ≈ 12,06 m</strong></li>
+                </ul>
+            </div>
+        </details>
+
+        <blockquote>
+            📝 <em>Ce calcul a permis de mieux anticiper le besoin en fil avant bobinage réel.</em>
+        </blockquote>
+
+        <p><strong>Réalisation du bobinage</strong></p>
+        <img src="images/sae motorisation de drone/bobinage.jpg" alt="Bobinage">
+
+        <blockquote>
+            Cette étape a demandé d'être très minutieux et concentré pour éviter de faire des erreurs dans le nombre de spires et donc avoir des écarts.
+        </blockquote>
+
+        <hr>
+
+        <h3>📏 Mesures réelles et vérifications</h3>
+        <p>Après le bobinage, j'ai mesuré la <strong>résistance des bobines à l'aide d'un multimètre</strong>. Cela permet de vérifier que les spires sont bien en contact et qu'il n'y a pas de court-circuit.</p>
+
+        <div class="content-box">
+            <p><span class="badge">Compétences : C2a – Tester, C2b – Valider</span></p>
+            <p><span class="badge">Apprentissage critique : Confronter résultats pratiques et attendus</span></p>
+            <p><span class="badge">Matières : Électronique, Physique appliquée</span></p>
+        </div>
+
+        <details>
+            <summary>📐 Autres calculs et résultats de mesures (cliquer pour voir)</summary>
+            <div class="two-columns" style="margin-top: 15px;">
+                <div class="column-box">
+                    <h3>🔹 Calcul de l'inductance (filtre RL)</h3>
+                    <p>Formule : L = R / (2 × π × fc)</p>
+                    <p>Avec : R = 47 Ω, fc = 477 000 Hz</p>
+                    <p><strong>Résultat :</strong> L ≈ 15,7 µH</p>
+
+                    <h3>🔹 Résistance pratique mesurée</h3>
+                    <p>Mesure avec les fils : 0,42 Ω</p>
+                    <p>Fils seuls : 0,30 Ω</p>
+                    <p><strong>Résistance réelle :</strong> 0,12 Ω</p>
+
+                    <h3>🔹 Résistance pour LED</h3>
+                    <p>R = (3,7 - 1,7) / 0,005 = <strong>400 Ω</strong></p>
+                    <p>Valeur utilisée : <strong>470 Ω</strong></p>
+                </div>

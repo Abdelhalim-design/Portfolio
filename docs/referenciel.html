@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Référentiel des Compétences - Abdelhalim Zouggagh</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding-top: 80px;
+            line-height: 1.6;
+        }
+
+        /* ===== NAVIGATION PRINCIPALE ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(15, 32, 39, 0.95), rgba(44, 83, 100, 0.95));
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(0, 191, 255, 0.5);
+            box-shadow: 0 4px 20px rgba(0, 191, 255, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(15, 32, 39, 0.98);
+            box-shadow: 0 6px 30px rgba(0, 191, 255, 0.4);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .nav-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00bfff;
+            text-shadow: 0 0 20px rgba(0, 191, 255, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            color: #00ffff;
+            transform: scale(1.05);
+        }
+
+        .nav-logo::before {
+            content: '⚡';
+            font-size: 1.8rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .nav-menu > li {
+            position: relative;
+        }
+
+        .nav-menu > li > a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.2rem;
+            color: rgba(0, 191, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 8px;
+            background: rgba(0, 191, 255, 0.05);
+            border: 1px solid rgba(0, 191, 255, 0.2);
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+        .nav-menu > li > a:hover {
+            background: rgba(0, 191, 255, 0.15);
+            color: #00ffff;
+            border-color: rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .nav-menu > li > a.active {
+            background: rgba(0, 191, 255, 0.2);
+            color: #00ffff;
+            border-color: #00bfff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            background: rgba(15, 32, 39, 0.98);
+            border: 2px solid rgba(0, 191, 255, 0.4);
+            border-radius: 12px;
+            padding: 0.8rem;
+            min-width: 280px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 191, 255, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .nav-menu > li:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-category {
+            color: #00bfff;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 0.5rem 1rem 0.3rem;
+            margin-top: 0.5rem;
+            border-top: 1px solid rgba(0, 191, 255, 0.2);
+        }
+
+        .dropdown-category:first-child {
+            margin-top: 0;
+            border-top: none;
+        }
+
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.7rem 1rem 0.7rem 2rem;
+            color: rgba(0, 191, 255, 0.8);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 0.88rem;
+            border-left: 3px solid transparent;
+            margin: 0.2rem 0;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(0, 191, 255, 0.1);
+            color: #00ffff;
+            border-left-color: #00bfff;
+            padding-left: 2.2rem;
+        }
+
+        .dropdown-menu a::before {
+            content: '▸';
+            color: #00bfff;
+            font-size: 1rem;
+            position: absolute;
+            left: 1rem;
+        }
+
+        .has-dropdown > a::after {
+            content: '▾';
+            margin-left: 0.3rem;
+            transition: transform 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .has-dropdown:hover > a::after {
+            transform: rotate(180deg);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 0.5rem;
+            background: rgba(0, 191, 255, 0.1);
+            border: 2px solid rgba(0, 191, 255, 0.3);
+            border-radius: 8px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #00bfff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        /* ===== CONTENU PRINCIPAL ===== */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 50px;
+        }
+
+        .page-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            color: #00bfff;
+            text-shadow: 0 0 20px rgba(0, 191, 255, 0.8);
+            margin-bottom: 15px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: #00ffff;
+            opacity: 0.8;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        /* ===== GRILLE DE TABLEAUX ===== */
+        .tables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .table-section {
+            background: rgba(15, 32, 39, 0.6);
+            border: 2px solid rgba(0, 191, 255, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 191, 255, 0.2);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .table-section:hover {
+            border-color: rgba(0, 255, 255, 0.5);
+            box-shadow: 0 8px 30px rgba(0, 191, 255, 0.4);
+            transform: translateY(-5px);
+        }
+
+        .table-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00bfff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+        }
+
+        /* ===== TABLEAUX ===== */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: linear-gradient(135deg, rgba(0, 191, 255, 0.2), rgba(0, 255, 255, 0.1));
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            color: #00ffff;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-bottom: 2px solid rgba(0, 191, 255, 0.3);
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(0, 191, 255, 0.1);
+            color: #e0e0e0;
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(0, 191, 255, 0.08);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        td strong {
+            color: #00bfff;
+            font-weight: 600;
+        }
+
+        /* ===== IMAGE RÉFÉRENTIEL ===== */
+        .referenciel-image {
+            text-align: center;
+            margin: 50px 0;
+            padding: 30px;
+            background: rgba(15, 32, 39, 0.6);
+            border: 2px solid rgba(0, 191, 255, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 191, 255, 0.2);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .referenciel-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0, 191, 255, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .referenciel-image img:hover {
+            transform: scale(1.02);
+        }
+
+        /* ===== SECTIONS D'ANALYSE ===== */
+        .analysis-section {
+            background: rgba(15, 32, 39, 0.6);
+            border: 2px solid rgba(0, 191, 255, 0.3);
+            border-radius: 15px;
+            padding: 35px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(0, 191, 255, 0.2);
+            animation: fadeInUp 0.6s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        .analysis-section:hover {
+            border-color: rgba(0, 255, 255, 0.5);
+            box-shadow: 0 8px 30px rgba(0, 191, 255, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .analysis-section h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00bfff;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px rgba(0, 191, 255, 0.5);
+        }
+
+        .analysis-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00bfff;
+            font-size: 1.6rem;
+            margin: 30px 0 20px;
+            padding-left: 20px;
+            border-left: 4px solid #00bfff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .analysis-section h3 {
+            color: #00ffff;
+            font-size: 1.2rem;
+            margin: 20px 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .analysis-section ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 15px 0;
+        }
+
+        .analysis-section li {
+            padding: 10px 0 10px 30px;
+            position: relative;
+            margin: 8px 0;
+            border-left: 2px solid rgba(0, 191, 255, 0.2);
+            padding-left: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .analysis-section li:hover {
+            border-left-color: #00bfff;
+            padding-left: 25px;
+            background: rgba(0, 191, 255, 0.05);
+        }
+
+        .analysis-section li::before {
+            content: '▸';
+            position: absolute;
+            left: 5px;
+            color: #00bfff;
+            font-weight: bold;
+        }
+
+        .analysis-section blockquote {
+            background: rgba(0, 191, 255, 0.08);
+            border-left: 4px solid #00bfff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-style: italic;
+            color: #87ceeb;
+        }
+
+        .analysis-section strong {
+            color: #00ffff;
+        }
+
+        /* ===== CONCLUSION ===== */
+        .conclusion {
+            background: linear-gradient(135deg, rgba(0, 191, 255, 0.1), rgba(0, 255, 255, 0.05));
+            border: 2px solid rgba(0, 191, 255, 0.4);
+            border-radius: 15px;
+            padding: 35px;
+            margin-top: 50px;
+            box-shadow: 0 8px 30px rgba(0, 191, 255, 0.3);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .conclusion h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00bfff;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .conclusion p {
+            margin: 15px 0;
+            font-size: 1.05rem;
+        }
+
+        .conclusion ul {
+            list-style: none;
+            padding-left: 20px;
+            margin-top: 15px;
+        }
+
+        .conclusion li {
+            padding: 8px 0;
+            color: #00ffff;
+            font-weight: 500;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background: rgba(15, 32, 39, 0.98);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.4s ease;
+                max-height: calc(100vh - 80px);
+                overflow-y: auto;
+            }
+
+            .nav-menu.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .tables-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .table-section,
+            .analysis-section,
+            .conclusion {
+                padding: 20px;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                Portfolio GEII
+            </a>
+
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <ul class="nav-menu" id="navMenu">
+                <li class="has-dropdown">
+                    <a href="index.html">🏠 Accueil</a>
+                    <div class="dropdown-menu">
+                        <a href="index.html">À propos de moi</a>
+                        <a href="Somaires.html">Sommaire</a>
+                    </div>
+                </li>
+
+                <li>
+                    <a href="referenciel.html" class="active">📊 Référentiel</a>
+                </li>
+
+                <li class="has-dropdown">
+                    <a href="#">📚 Projets Académiques</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-category">📌 Semestre 1</div>
+                        <div class="dropdown-submenu">
+                            <a href="Pompe.html">💧 Station de Pompage</a>
+                            <a href="concevoir_station_pompage.html" style="padding-left: 3rem;">→ Concevoir</a>
+                            <a href="verifier_station_pompage.html" style="padding-left: 3rem;">→ Vérifier</a>
+                            
+                            <a href="Robot_suiveur.html">🤖 Robot Suiveur</a>
+                            <a href="concevoir_robot_suiveur.html" style="padding-left: 3rem;">→ Concevoir</a>
+                            <a href="verifier_robot_suiveur.html" style="padding-left: 3rem;">→ Vérifier</a>
+                        </div>
+
+                        <div class="dropdown-category">🏅 Semestre 2</div>
+                        <div class="dropdown-submenu">
+                            <a href="sae_drone.html">🚁 Moteur de Drone</a>
+                            <a href="concevoir_moteur_drone.html" style="padding-left: 3rem;">→ Concevoir</a>
+                            <a href="verifier_moteur_drone.html" style="padding-left: 3rem;">→ Vérifier</a>
+                            
+                            <a href="sae_snake.html">🐍 Snake</a>
+                            <a href="concevoir_sae_snake.html" style="padding-left: 3rem;">→ Concevoir</a>
+                            <a href="verifier_sae_snake.html" style="padding-left: 3rem;">→ Vérifier</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="has-dropdown">
+                    <a href="#">💼 Expérience</a>
+                    <div class="dropdown-menu">
+                        <a href="projet_realiser.html">🏆 Projets Réalisés</a>
+                        <a href="competence_aquise.html">🔧 Compétences Acquises</a>
+                    </div>
+                </li>
+
+                <li>
+                    <a href="contact.html">📞 Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ===== EN-TÊTE DE PAGE ===== -->
+    <div class="page-header">
+        <h1 class="page-title">📊 Référentiel de Compétences</h1>
+        <p class="page-subtitle">Objectifs pédagogiques et matières mobilisées en GEII</p>
+    </div>
+
+    <!-- ===== CONTENU PRINCIPAL ===== -->
+    <div class="container">
+
+        <!-- ===== GRILLE DE TABLEAUX ===== -->
+        <div class="tables-grid">
+            <!-- Objectifs pédagogiques -->
+            <div class="table-section">
+                <h2>🎯 Objectifs pédagogiques</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Compétence</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>C1a</strong></td>
+                            <td>Produire une analyse fonctionnelle</td>
+                        </tr>
+                        <tr>
+                            <td><strong>C1b</strong></td>
+                            <td>Réaliser un prototype</td>
+                        </tr>
+                        <tr>
+                            <td><strong>C1c</strong></td>
+                            <td>Documenter la fabrication</td>
+                        </tr>
+                        <tr>
+                            <td><strong>C2a</strong></td>
+                            <td>Tester le fonctionnement</td>
+                        </tr>
+                        <tr>
+                            <td><strong>C2b</strong></td>
+                            <td>Valider les performances</td>
+                        </tr>
+                        <tr>
+                            <td><strong>C2c</strong></td>
+                            <td>Corriger un défaut</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Matières mobilisées -->
+            <div class="table-section">
+                <h2>📚 Matières mobilisées</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Matière</th>
+                            <th>Apport dans le projet</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Électronique</strong></td>
+                            <td>Bobinage, mesure résistance, inductance</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CAO</strong></td>
+                            <td>Modélisation 3D des pièces avec SolidWorks</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Électricité</strong></td>
+                            <td>Mesures sur oscilloscope, filtres RL</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Physique appliquée</strong></td>
+                            <td>Fréquence de coupure, modélisation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Méthodologie projet</strong></td>
+                            <td>Planification, documentation, résolution de problèmes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Informatique / Simulation</strong></td>
+                            <td>Simulation PWM avec PSIM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== IMAGE RÉFÉRENTIEL ===== -->
+        <div class="referenciel-image">
+            <img src="images/REFERENCIEL COMPETENCE.png" alt="Référentiel des Compétences GEII">
+        </div>
+
+        <!-- ===== ANALYSE DES COMPÉTENCES ===== -->
+        <div class="analysis-section">
+            <h1>🧠 Analyse des compétences GEII : Concevoir et Vérifier un système</h1>
+            <p>Cette image présente deux grandes compétences fondamentales dans la formation GEII (Génie Électrique et Informatique Industrielle) : <strong>"Concevoir"</strong> et <strong>"Vérifier"</strong> un système, accompagnées de leurs <strong>apprentissages critiques au niveau 1</strong> de développement.</p>
+
+            <hr style="border: none; height: 2px; background: linear-gradient(90deg, transparent, #00bfff, transparent); margin: 30px 0;">
+
+            <h2>🔧 1. Concevoir la partie GEII d'un système</h2>
+
+            <h3>🎯 Objectif :</h3>
+            <p>Participer à la conception d'un système industriel en intégrant les innovations technologiques, les besoins du client et la stratégie de l'entreprise.</p>
+
+            <h3>✅ Compétences associées :</h3>
+            <ul>
+                <li><strong>Approche holistique</strong> : intégrer innovation, stratégie et besoins clients.</li>
+                <li><strong>Production documentaire</strong> : fournir l'ensemble des documents nécessaires (plans, cahier des charges…).</li>
+                <li><strong>Communication adaptée</strong> : échanger efficacement avec les différents acteurs du projet.</li>
+            </ul>
+
+            <h3>📘 Apprentissages critiques (Niveau 1) :</h3>
+            <ul>
+                <li>Produire une <strong>analyse fonctionnelle</strong> d'un système simple.</li>
+                <li>Réaliser un <strong>prototype</strong> (matériel ou logiciel).</li>
+                <li>Rédiger un <strong>dossier de fabrication</strong> à partir d'un dossier de conception.</li>
+            </ul>
+
+            <blockquote>
+                🧩 <strong>Enjeux pédagogiques</strong> : Initier à une démarche projet réaliste, en donnant les clés pour comprendre un besoin et y répondre techniquement de manière structurée.
+            </blockquote>
+
+            <hr style="border: none; height: 2px; background: linear-gradient(90deg, transparent, #00bfff, transparent); margin: 30px 0;">
+
+            <h2>🧪 2. Vérifier la partie GEII d'un système</h2>
+
+            <h3>🎯 Objectif :</h3>
+            <p>Savoir tester et évaluer un système en conditions réelles, en respectant les normes techniques, économiques et environnementales.</p>
+
+            <h3>✅ Compétences associées :</h3>
+            <ul>
+                <li>Prise en compte des <strong>spécificités matérielles et réglementaires</strong>.</li>
+                <li>Mise en œuvre d'un <strong>plan d'essais et d'évaluation</strong>.</li>
+                <li>Intégration des <strong>enjeux économiques, environnementaux et sociétaux</strong>.</li>
+            </ul>
+
+            <h3>📘 Apprentissages critiques (Niveau 1) :</h3>
+            <ul>
+                <li>Appliquer une <strong>procédure d'essais</strong>.</li>
+                <li>Identifier un <strong>dysfonctionnement</strong>.</li>
+                <li>Décrire les <strong>effets</strong> d'un dysfonctionnement sur le système.</li>
+            </ul>
+
+            <blockquote>
+                🧩 <strong>Enjeux pédagogiques</strong> : Développer la rigueur, l'analyse critique et la capacité à assurer la fiabil

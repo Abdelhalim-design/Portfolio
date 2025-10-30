@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérifier - Robot Suiveur | Portfolio GEII</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding-top: 80px;
+            line-height: 1.6;
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(15, 32, 39, 0.95), rgba(44, 83, 100, 0.95));
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(0, 191, 255, 0.5);
+            box-shadow: 0 4px 20px rgba(0, 191, 255, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(15, 32, 39, 0.98);
+            box-shadow: 0 6px 30px rgba(0, 191, 255, 0.4);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .nav-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00bfff;
+            text-shadow: 0 0 20px rgba(0, 191, 255, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            color: #00ffff;
+            transform: scale(1.05);
+        }
+
+        .nav-logo::before {
+            content: '⚡';
+            font-size: 1.8rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .nav-menu > li {
+            position: relative;
+        }
+
+        .nav-menu > li > a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.2rem;
+            color: rgba(0, 191, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 8px;
+            background: rgba(0, 191, 255, 0.05);
+            border: 1px solid rgba(0, 191, 255, 0.2);
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+        .nav-menu > li > a:hover,
+        .nav-menu > li > a.active {
+            background: rgba(0, 191, 255, 0.15);
+            color: #00ffff;
+            border-color: rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            background: rgba(15, 32, 39, 0.98);
+            border: 2px solid rgba(0, 191, 255, 0.4);
+            border-radius: 12px;
+            padding: 0.8rem;
+            min-width: 280px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 191, 255, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .nav-menu > li:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-category {
+            color: #00bfff;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 0.5rem 1rem 0.3rem;
+            margin-top: 0.5rem;
+            border-top: 1px solid rgba(0, 191, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dropdown-category:first-child {
+            margin-top: 0;
+            border-top: none;
+        }
+
+        .dropdown-submenu {
+            margin-top: 0.3rem;
+        }
+
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.7rem 1rem 0.7rem 2rem;
+            color: rgba(0, 191, 255, 0.8);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 0.88rem;
+            border-left: 3px solid transparent;
+            margin: 0.2rem 0;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(0, 191, 255, 0.1);
+            color: #00ffff;
+            border-left-color: #00bfff;
+            padding-left: 2.2rem;
+        }
+
+        .dropdown-menu a::before {
+            content: '▸';
+            color: #00bfff;
+            font-size: 1rem;
+            position: absolute;
+            left: 1rem;
+        }
+
+        .has-dropdown > a::after {
+            content: '▾';
+            margin-left: 0.3rem;
+            transition: transform 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .has-dropdown:hover > a::after {
+            transform: rotate(180deg);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 0.5rem;
+            background: rgba(0, 191, 255, 0.1);
+            border: 2px solid rgba(0, 191, 255, 0.3);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger:hover {
+            background: rgba(0, 191, 255, 0.2);
+            border-color: #00bfff;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #00bfff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* ===== HERO TITLE ===== */
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            color: #00ffff;
+            font-size: 2.5rem;
+            text-align: center;
+            border-bottom: 4px solid #00bfff;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.8), 0 0 40px rgba(0, 191, 255, 0.4);
+            letter-spacing: 2px;
+            position: relative;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .hero-title::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent 0%, #00ffff 50%, transparent 100%);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+            animation: electricFlow 2s ease-in-out infinite;
+        }
+
+        @keyframes electricFlow {
+            0%, 100% {
+                opacity: 0.6;
+                transform: translateX(-50%) scaleX(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: translateX(-50%) scaleX(1);
+            }
+        }
+
+        /* ===== SECTION TITLES ===== */
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00ffff;
+            font-size: 2rem;
+            margin-top: 50px;
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 5px solid #00bfff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+            position: relative;
+            animation: fadeInLeft 0.6s ease-out;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, #00bfff, #00ffff);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            animation: blink 1.5s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* ===== INTRO BOX ===== */
+        .intro-box {
+            background: linear-gradient(135deg, rgba(0, 191, 255, 0.15) 0%, rgba(0, 255, 255, 0.1) 100%);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(0, 191, 255, 0.5);
+            box-shadow: 0 0 30px rgba(0, 191, 255, 0.2);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* ===== IMAGES ===== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 191, 255, 0.3);
+            border: 2px solid rgba(0, 191, 255, 0.4);
+            transition: all 0.3s ease;
+            background: rgba(15, 32, 39, 0.5);
+            padding: 10px;
+            display: block;
+            margin: 20px auto;
+        }
+
+        img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 255, 255, 0.5);
+            border-color: #00ffff;
+        }
+
+        /* ===== CONTENT BOX ===== */
+        .content-box {
+            background: rgba(0, 191, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #00bfff;
+            box-shadow: 0 3px 15px rgba(0, 191, 255, 0.2);
+        }
+
+        .content-box ul {
+            margin: 10px 0;
+            padding-left: 25px;
+        }
+
+        .content-box li {
+            margin: 8px 0;
+            position: relative;
+        }
+
+        .content-box li::marker {
+            color: #00bfff;
+        }
+
+        /* ===== BLOCKQUOTE ===== */
+        blockquote {
+            background: rgba(0, 191, 255, 0.1);
+            border-left: 4px solid #00ffff;
+            padding: 15px 20px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #00ffff;
+            border-radius: 5px;
+        }
+
+        /* ===== COMPETENCE BADGE ===== */
+        .competence-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(0, 191, 255, 0.2), rgba(0, 255, 255, 0.1));
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 2px solid rgba(0, 191, 255, 0.5);
+            box-shadow: 0 4px 10px rgba(0, 191, 255, 0.3);
+            text-shadow: 0 0 5px rgba(0, 191, 255, 0.8);
+            margin: 10px 5px;
+            color: #00ffff;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        /* ===== TABLES ===== */
+        table {
+            width: 100%;
+            background: rgba(15, 32, 39, 0.8);
+            border: 2px solid rgba(0, 191, 255, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            margin: 20px 0;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #0f2027, #2c5364);
+        }
+
+        th {
+            color: #00ffff;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(0, 191, 255, 0.5);
+            border-bottom: 2px solid rgba(0, 191, 255, 0.5);
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            color: #e0e0e0;
+            border-bottom: 1px solid rgba(0, 191, 255, 0.2);
+            padding: 12px;
+            vertical-align: middle;
+        }
+
+        tr:hover {
+            background: rgba(0, 191, 255, 0.1);
+        }
+
+        td:first-child {
+            font-weight: 600;
+            color: #00bfff;
+        }
+
+        /* Checkmark style */
+        td:contains('✅') {
+            color: #00ff00;
+        }
+
+        /* ===== BILAN SECTION ===== */
+        .bilan-section {
+            background: linear-gradient(135deg, rgba(0, 191, 255, 0.2) 0%, rgba(0, 255, 255, 0.15) 100%);
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 40px;
+            box-shadow: 0 5px 30px rgba(0, 191, 255, 0.3), inset 0 0 30px rgba(0, 191, 255, 0.05);
+            border: 2px solid rgba(0, 191, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bilan-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(0, 191, 255, 0.1) 0%, transparent 50%);
+            animation: pulseCircuit 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulseCircuit {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* ===== HR ===== */
+        hr {
+            border: none;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, #00bfff 50%, transparent 100%);
+            box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+            margin: 40px 0;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background: rgba(15, 32, 39, 0.98);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.4s ease;
+                max-height: calc(100vh - 80px);
+                overflow-y: auto;
+            }
+
+            .nav-menu.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .nav-menu > li {
+                width: 100%;
+            }
+
+            .nav-menu > li > a {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                margin-top: 0.5rem;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+
+            .has-dropdown.open .dropdown-menu {
+                max-height: 800px;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero-title {
+                font-size: 1.8rem;
+                letter-spacing: 1px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 1rem;
+            }
+
+            .nav-logo {
+                font-size: 1.2rem;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                Portfolio GEII
+            </a>
+
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <ul class="nav-menu" id="navMenu">
+                <!-- 🏠 Accueil -->
+                <li class="has-dropdown">
+                    <a href="index.html">🏠 Accueil</a>
+                    <div class="dropdown-menu">
+                        <a href="index.html">À propos de moi</a>
+                        <a href="Somaires.html">Sommaire</a>
+                    </div>
+                </li>
+
+                <!-- 📊 Référentiel -->
+                <li>
+                    <a href="referenciel.html">📊 Référentiel</a>
+                </li>
+
+                <!-- 📚 Projets Académiques -->
+                <li class="has-dropdown">
+                    <a href="#" class="active">📚 Projets Académiques</a>
+                    <div class="dropdown-menu">
+                        <!-- 1ère année -->
+                        <div class="dropdown-category">📌 Semestre 1</div>
+                        <div class="dropdown-submenu">
+                            <a href="Pompe.html">💧 Station de Pompage</a>
+                            <a href="concevoir_station_pompage.html" style="padding-left: 3rem;">→ Concevoir</a>
+                            <a href="verifier_station_pompage.html" style="padding-left: 3rem;">→ Vérifier</a>
+                            
+                            <a href="Robot_suiveur.html">🤖 Robot Suiveur</a>
+                            <a href="concevoir_robot_suiveur.html" style="padding-left: 3rem;">→ Concevoir</a>
+                            <a href="verifier_robot_suiveur.html" style="padding-left: 3rem;">→ Vérifier</a>
+                        </div>
+
+                        <div class="dropdown-category">🏅 Semestre 2</div>
+                        <div class="dropdown-submenu">
+                            <a href="sae_drone.html">🚁 Moteur de Drone</a>
+                            <a href="concevoir_moteur_drone.html" style="padding-left: 3rem;">→ Concevoir</a>
+                            <a href="verifier_moteur_drone.html" style="padding-left: 3rem;">→ Vérifier</a>
+                            
+                            <a href="sae_snake.html">🐍 Snake</a>
+                            <a href="concevoir_sae_snake.html" style="padding-left: 3rem;">→ Concevoir</a>
+                            <a href="verifier_sae_snake.html" style="padding-left: 3rem;">→ Vérifier</a>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- 💼 Expérience Personnelle -->
+                <li class="has-dropdown">
+                    <a href="#">💼 Expérience</a>
+                    <div class="dropdown-menu">
+                        <a href="projet_realiser.html">🏆 Projets Réalisés</a>
+                        <a href="competence_aquise.html">🔧 Compétences Acquises</a>
+                    </div>
+                </li>
+
+                <!-- 📞 Contact -->
+                <li>
+                    <a href="contact.html">📞 Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ===== CONTAINER ===== -->
+    <div class="container">
+        
+        <h1 class="hero-title">🔍 SAE S1 – Robot Suiveur de Ligne : Partie VÉRIFIER</h1>
+
+        <div class="intro-box">
+            <h2>🎯 Objectif de cette page</h2>
+            <p>Cette page décrit toutes les actions de <strong>vérification, test, correction et amélioration</strong> réalisées sur le robot HC-LineBoT. Elle correspond à la validation de la <strong>compétence C2</strong> du BUT GEII.</p>
+        </div>
+
+        <hr>
+
+        <h2>🧪 Tests matériels après soudure</h2>
+        <p>Une fois la carte fabriquée, nous avons réalisé une série de vérifications :</p>
+
+        <img src="images/sae robot/test_tableau.png" alt="Tests tableau">
+
+        <div class="content-box">
+            <ul>
+                <li><strong>Tests de continuité et tension</strong> avec un multimètre</li>
+                <li>Contrôle de la polarité des LEDs, de la tension d'alimentation</li>
+                <li>Vérification de la présence de court-circuit</li>
+            </ul>
+        </div>
+
+        <blockquote>
+            🔧 Nous avons détecté un <strong>court-circuit causé par une soudure trop épaisse</strong>, et l'avons corrigé manuellement.
+        </blockquote>
+
+        <img src="images/sae robot/soudure_lier.png" alt="Soudure liée">
+
+        <p>
+            <span class="competence-badge">🎓 Compétence C2a : Identifier un dysfonctionnement</span>
+            <span class="competence-badge">📚 Matières : Électronique, Physique appliquée</span>
+        </p>
+
+        <hr>
+
+        <h2>⚠️ Diagnostic de pannes spécifiques</h2>
+        <p>Plusieurs problèmes ont été identifiés :</p>
+
+        <div class="content-box">
+            <ul>
+                <li><strong>Potentiomètre mal choisi</strong> (20kΩ au lieu de 10kΩ)</li>
+                <li><strong>Capteur IR trop haut</strong> : ne détectait pas la ligne</li>
+                <li>Résistance mal dimensionnée → LEDs trop faibles</li>
+            </ul>
+        </div>
+
+        <img src="images/sae robot/probleme_capteur.jpg" alt="Problème capteur">
+
+        <p>Chaque défaut a été corrigé avec un raisonnement basé sur les mesures et les données techniques.</p>
+
+        <p>
+            <span class="competence-badge">🎓 Compétence C2c : Corriger une solution technique</span>
+            <span class="competence-badge">📚 Matières : Mathématiques, Physique, Anglais technique (datasheets)</span>
+        </p>
+
+        <hr>
+
+        <h2>🧠 Vérification du programme embarqué</h2>
+        <p>En testant le robot :</p>
+
+        <div class="content-box">
+            <ul>
+                <li>Les capteurs IR étaient mal calibrés → mauvaise détection</li>
+                <li>Les LEDs ne réagissaient pas correctement</li>
+                <li>Le robot tournait trop au lieu de 360°</li>
+            </ul>
+        </div>
+
+        <p>Nous avons modifié les seuils, ajusté les temporisations, et corrigé les routines.</p>
+
+        <p>
+            <span class="competence-badge">🎓 Compétence C2b : Tester une solution logicielle</span>
+            <span class="competence-badge">📚 Matières : Informatique, Automatisme</span>
+        </p>
+
+        <hr>
+
+        <h2>🚀 Optimisation des performances</h2>
+        <p>Nous avons mesuré et comparé plusieurs essais :</p>
+
+        <div class="content-box">
+            <ul>
+                <li>Ajustement de l'écartement entre capteurs : <strong>1,8 cm</strong> (égale à la largeur de ligne)</li>
+                <li>Réduction de l'oscillation du robot</li>
+                <li>Calibration précise du temps de rotation pour obtenir un <strong>360° fluide</strong></li>
+            </ul>
+        </div>
+
+        <p>
+            <span class="competence-badge">🎓 Compétence C2b / C2c : Vérifier la conformité et ajuster les performances</span>
+            <span class="competence-badge">📚 Matières : Mathématiques, Informatique, Automatisme</span>
+        </p>
+
+        <hr>
+
+        <!-- ===== BILAN PERSONNEL ===== -->
+        <div class="bilan-section">
+            <h2>📝 Bilan Personnel</h2>
+            <p>Lors de la phase de vérification, j'ai appris à <strong>diagnostiquer et corriger les dysfonctionnements</strong> matériels et logiciels du robot. Les tests électriques ont permis d'identifier des erreurs de soudure et des composants mal choisis, que nous avons corrigés grâce à des mesures précises.</p>
+            <p>La vérification du programme embarqué m'a montré l'importance d'ajuster les paramètres pour garantir un comportement optimal du robot, notamment la calibration des capteurs et le contrôle des rotations.</p>
+            <p>Enfin, l'optimisation des performances m'a appris à affiner les réglages pour atteindre les objectifs du cahier des charges, en garantissant une trajectoire stable et un temps de course satisfaisant.</p>
+            <p><strong>Cette étape a renforcé ma capacité à tester, analyser et améliorer un système complet pour le rendre conforme aux attentes.</strong></p>
+        </div>
+
+        <hr>
+
+        <h2>✅ Résultats obtenus</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Critère</th>
+                    <th>Résultat</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Temps de course</td>
+                    <td>✅ 13,62 secondes</td>
+                </tr>
+                <tr>
+                    <td>Bonus 360°</td>
+                    <td>✅ Réalisé avec précision</td>
+                </tr>
+                <tr>
+                    <td>Stabilité du robot</td>
+                    <td>✅ Trajectoire fluide</td>
+                </tr>
+                <tr>
+                    <td>Objectifs du cahier des charges</td>
+                    <td>✅ Tous atteints</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <script>
+        // ===== NAVIGATION SCROLL =====
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // ===== HAMBURGER MENU =====
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Fermer le menu en cliquant sur un lien (mobile)
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const parent = link.parentElement;
+                if (parent.classList.contains('has-dropdown') && window.innerWidth <= 1024) {
+                    e.preventDefault();
+                    parent.classList.toggle('open');
+                } else if (!link.getAttribute('href').startsWith('#')) {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
+            });
+        });
+
+        // ===== ACTIVE LINK DETECTION =====
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === currentPage) {
+                link.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>
