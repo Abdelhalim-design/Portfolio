@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compétences Acquises | Portfolio GEII</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --primary-light: #38bdf8;
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
+            
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --bg-hover: #334155;
+            
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            --border: rgba(148, 163, 184, 0.1);
+            --border-hover: rgba(14, 165, 233, 0.3);
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-glow: 0 0 20px rgba(14, 165, 233, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px) saturate(180%);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        nav.scrolled {
+            background: rgba(15, 23, 42, 0.95);
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+            border-bottom: 1px solid var(--border-hover);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            height: 80px;
+        }
+
+        .nav-logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            color: var(--primary-light);
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 0.25rem;
+            align-items: center;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+            background: var(--bg-hover);
+        }
+
+        .nav-link.active {
+            color: var(--primary-light);
+            background: rgba(14, 165, 233, 0.1);
+        }
+
+        .chevron {
+            margin-left: 0.25rem;
+            font-size: 0.75rem;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-item:hover .chevron {
+            transform: rotate(180deg);
+        }
+
+        .dropdown {
+            position: absolute;
+            top: calc(100% + 0.75rem);
+            left: 0;
+            min-width: 320px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        .nav-item:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-category {
+            padding: 0.75rem 1rem 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .dropdown-category:first-child {
+            margin-top: 0;
+        }
+
+        .dropdown-category::before {
+            content: '';
+            width: 3px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .dropdown-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.9375rem;
+            transition: all 0.2s ease;
+            margin: 0.125rem 0;
+        }
+
+        .dropdown-link:hover {
+            color: var(--text-primary);
+            background: var(--bg-hover);
+            transform: translateX(4px);
+        }
+
+        .dropdown-link.active {
+            color: var(--primary-light);
+            background: rgba(14, 165, 233, 0.1);
+        }
+
+        .dropdown-sublink {
+            padding-left: 2.5rem;
+            font-size: 0.875rem;
+        }
+
+        .dropdown-sublink::before {
+            content: '→';
+            position: absolute;
+            left: 1.75rem;
+            color: var(--text-muted);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 0.5rem;
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .hamburger span {
+            width: 24px;
+            height: 2px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 2rem 4rem;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+        }
+
+        .card h2 {
+            font-size: 1.75rem;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            color: var(--primary-light);
+            margin: 2rem 0 1rem;
+        }
+
+        /* ===== COMPETENCE GRID ===== */
+        .competence-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .competence-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .competence-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+        }
+
+        .competence-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .competence-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .competence-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .competence-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--primary-light);
+            background: rgba(14, 165, 233, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-top: 0.25rem;
+            display: inline-block;
+        }
+
+        .competence-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .competence-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        /* ===== BADGES ===== */
+        .badge-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            color: var(--primary-light);
+            font-weight: 500;
+        }
+
+        .badge.matiere {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: rgba(139, 92, 246, 0.2);
+            color: var(--secondary);
+        }
+
+        .badge.skill {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: rgba(6, 182, 212, 0.2);
+            color: var(--accent);
+        }
+
+        /* ===== PROGRESSION ===== */
+        .progress-item {
+            margin: 1.5rem 0;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .progress-level {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-hover);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        /* ===== TABLES ===== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: var(--bg-hover);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            color: var(--primary-light);
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: rgba(14, 165, 233, 0.05);
+        }
+
+        /* ===== BLOCKQUOTE ===== */
+        blockquote {
+            border-left: 4px solid var(--primary);
+            padding: 1rem 1.5rem;
+            background: rgba(14, 165, 233, 0.05);
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        /* ===== BILAN ===== */
+        .bilan {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid var(--border-hover);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .bilan h2 {
+            color: var(--primary-light);
+            border: none;
+        }
+
+        /* ===== STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(12px);
+                flex-direction: column;
+                padding: 1.5rem;
+                gap: 0.5rem;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.4s ease;
+            }
+
+            .nav-menu.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .dropdown {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                max-height: 0;
+                padding: 0;
+                transition: max-height 0.3s ease;
+            }
+
+            .nav-item.open .dropdown {
+                max-height: 1000px;
+                padding: 0.5rem;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .competence-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 100px 1rem 2rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            table {
+                font-size: 0.875rem;
+            }
+
+            th, td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-main);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-hover);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <div class="logo-icon">⚡</div>
+                <span>Portfolio GEII</span>
+            </a>
+
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <span>🏠 Accueil</span>
+                        <span class="chevron">▾</span>
+                    </a>
+                    <div class="dropdown">
+                        <a href="index.html" class="dropdown-link">👤 À propos</a>
+                        <a href="Somaires.html" class="dropdown-link">📑 Sommaire</a>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a href="referenciel.html" class="nav-link">📊 Référentiel</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <span>📚 Projets</span>
+                        <span class="chevron">▾</span>
+                    </a>
+                    <div class="dropdown">
+                        <div class="dropdown-category">🎓 1ère Année</div>
+                        <div class="dropdown-category">Semestre 1</div>
+                        <a href="Pompe.html" class="dropdown-link">💧 Station de Pompage</a>
+                        <a href="concevoir_station_pompage.html" class="dropdown-link dropdown-sublink">Concevoir</a>
+                        <a href="verifier_station_pompage.html" class="dropdown-link dropdown-sublink">Vérifier</a>
+                        
+                        <a href="Robot_suiveur.html" class="dropdown-link">🤖 Robot Suiveur</a>
+                        <a href="concevoir_robot_suiveur.html" class="dropdown-link dropdown-sublink">Concevoir</a>
+                        <a href="verifier_robot_suiveur.html" class="dropdown-link dropdown-sublink">Vérifier</a>
+
+                        <div class="dropdown-category">Semestre 2</div>
+                        <a href="sae_drone.html" class="dropdown-link">🚁 Moteur de Drone</a>
+                        <a href="concevoir_moteur_drone.html" class="dropdown-link dropdown-sublink">Concevoir</a>
+                        <a href="verifier_moteur_drone.html" class="dropdown-link dropdown-sublink">Vérifier</a>
+                        
+                        <a href="sae_snake.html" class="dropdown-link">🎮 Snake / Arkanoid</a>
+                        <a href="concevoir_sae_snake.html" class="dropdown-link dropdown-sublink">Concevoir</a>
+                        <a href="verifier_sae_snake.html" class="dropdown-link dropdown-sublink">Vérifier</a>
+
+                        <div class="dropdown-category">🎓 2ème Année</div>
+                        <div class="dropdown-category">Semestre 3</div>
+                        <a href="#" class="dropdown-link">🔧 Projet S3 (à venir)</a>
+                        <div class="dropdown-category">Semestre 4</div>
+                        <a href="#" class="dropdown-link">⚙️ Projet S4 (à venir)</a>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <span>💼 Expérience</span>
+                        <span class="chevron">▾</span>
+                    </a>
+                    <div class="dropdown">
+                        <a href="projet_realiser.html" class="dropdown-link">🏆 Projets Réalisés</a>
+                        <a href="competence_aquise.html" class="dropdown-link active">🔧 Compétences Acquises</a>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a href="contact.html" class="nav-link">📞 Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <h1 class="hero-title">🔧 Compétences Acquises</h1>
+            <p class="hero-subtitle">Un panorama complet des compétences techniques développées durant ma formation BUT GEII et mes expériences personnelles</p>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">6</div>
+                <div class="stat-label">Compétences BUT</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">12+</div>
+                <div class="stat-label">Matières mobilisées</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Projets SAE</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2</div>
+                <div class="stat-label">Années BUT</div>
+            </div>
+        </div>
+
+        <!-- COMPÉTENCES PRINCIPALES -->
+        <div class="card">
+            <h2>🎯 Compétences du Référentiel BUT GEII</h2>
+            <p>Les 6 compétences clés développées tout au long de ma formation :</p>
+        </div>
+
+        <div class="competence-grid">
+            <!-- C1 -->
+            <div class="competence-card">
+                <div class="competence-header">
+                    <div class="competence-icon">🔧</div>
+                    <div>
+                        <div class="competence-title">Concevoir</div>
+                        <span class="competence-code">C1</span>
+                    </div>
+                </div>
+                <p class="competence-description">
+                    Concevoir la partie GEII d'un système pluritechnologique en intégrant des contraintes techniques, économiques et environnementales.
+                </p>
+                <div class="badge-group">
+                    <span class="badge skill">📐 CAO (KiCad, SolidWorks)</span>
+                    <span class="badge skill">⚡ Dimensionnement électrique</span>
+                    <span class="badge skill">💻 Programmation embarquée</span>
+                    <span class="badge skill">📊 Analyse fonctionnelle</span>
+                </div>
+            </div>
+
+            <!-- C2 -->
+            <div class="competence-card">
+                <div class="competence-header">
+                    <div class="competence-icon">✅</div>
+                    <div>
+                        <div class="competence-title">Vérifier</div>
+                        <span class="competence-code">C2</span>
+                    </div>
+                </div>
+                <p class="competence-description">
+                    Vérifier la conformité d'un système pluritechnologique en effectuant des tests, mesures et diagnostics approfondis.
+                </p>
+                <div class="badge-group">
+                    <span class="badge skill">🔬 Tests de continuité</span>
+                    <span class="badge skill">📊 Validation protocoles</span>
+                    <span class="badge skill">🐛 Débogage matériel/logiciel</span>
+                    <span class="badge skill">📝 Rapports techniques</span>
+                </div>
+            </div>
+
+            <!-- C3 -->
+            <div class="competence-card">
+                <div class="competence-header">
+                    <div class="competence-icon">🔌</div>
+                    <div>
+                        <div class="competence-title">Installer</div>
+                        <span class="competence-code">C3</span>
+                    </div>
+                </div>
+                <p class="competence-description">
+                    Installer et mettre en service un système électrique, en respectant les normes de sécurité et les contraintes réglementaires.
+                </p>
+                <div class="badge-group">
+                    <span class="badge skill">⚡ Câblage électrique</span>
+                    <span class="badge skill">🛡️ Normes de sécurité</span>
+                    <span class="badge skill">🔧 Assemblage systèmes</span>
+                    <span class="badge skill">📋 Documentation technique</span>
+                </div>
+            </div>
+
+            <!-- C4 -->
+            <div class="competence-card">
+                <div class="competence-header">
+                    <div class="competence-icon">⚙️</div>
+                    <div>
+                        <div class="competence-title">Maintenir</div>
+                        <span class="competence-code">C4</span>
+                    </div>
+                </div>
+                <p class="competence-description">
+                    Maintenir un système pluritechnologique en assurant la maintenance préventive et corrective des équipements.
+                </p>
+                <div class="badge-group">
+                    <span class="badge skill">🔍 Diagnostic de pannes</span>
+                    <span class="badge skill">🔧 Réparations</span>
+                    <span class="badge skill">📊 Suivi maintenance</span>
+                    <span class="badge skill">📈 Optimisation</span>
+                </div>
+            </div>
+
+            <!-- C5 -->
+            <div class="competence-card">
+                <div class="competence-header">
+                    <div class="competence-icon">🤝</div>
+                    <div>
+                        <div class="competence-title">Organiser</div>
+                        <span class="competence-code">C5</span>
+                    </div>
+                </div>
+                <p class="competence-description">
+                    Organiser un projet en gérant les ressources, le planning et la collaboration au sein d'une équipe technique.
+                </p>
+                <div class="badge-group">
+                    <span class="badge skill">👥 Travail en équipe</span>
+                    <span class="badge skill">📊 Planification</span>
+                    <span class="badge skill">💼 Coordination</span>
+                </div>
+            </div>
+
+            <!-- C6 -->
+            <div class="competence-card">
+                <div class="competence-header">
+                    <div class="competence-icon">💬</div>
+                    <div>
+                        <div class="competence-title">Communiquer</div>
+                        <span class="competence-code">C6</span>
+                    </div>
+                </div>
+                <p class="competence-description">
+                    Communiquer efficacement en contexte technique, tant à l'oral qu'à l'écrit, avec des équipes pluridisciplinaires.
+                </p>
+                <div class="badge-group">
+                    <span class="badge skill">📝 Rédaction technique</span>
+                    <span class="badge skill">🎤 Présentations orales</span>
+                    <span class="badge skill">🌐 Communication anglais</span>
+                    <span class="badge skill">📊 Documentation</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPÉTENCES TECHNIQUES -->
+        <div class="card">
+            <h2>💻 Compétences Techniques</h2>
+
+            <h3>⚡ Électronique & Électrotechnique</h3>
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span class="progress-name">Conception de PCB (KiCad)</span>
+                    <span class="progress-level">Avancé</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 85%"></div>
+                </div>
+            </div>
+
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span class="progress-name">Soudure & Brasage</span>
+                    <span class="progress-level">Avancé</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 90%"></div>
+                </div>
+            </div>
+
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span class="progress-name">Tests & Mesures (Multimètre, Oscilloscope)</span>
+                    <span class="progress-level">Avancé</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 80%"></div>
+                </div>
+            </div>
+
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span class="progress-name">Lecture de Schémas Électriques</span>
+                    <span class="progress-level">Expert</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 95%"></div>
+                </div>
+            </div>
+
+            <h3>💻 Informatique & Programmation</h3>
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span class="progress-name">Langage C (Embarqué)</span>
+                    <span class="progress-level">Avancé</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 85%"></div>
+                </div>
+            </div>
+
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span class="progress-name">MPLAB X / Microcontrôleurs PIC</span>
+                    <span class="progress-level">Avancé</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 80%"></div>
+                </div>
+            </div>
+
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span class="progress-name">Python / Scripts d'automatisation</span>
+                    <span class="progress-level">Intermédiaire</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 70%"></div>
+                </div>
+            </div>
+
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span class="progress-name">Gestion de versions (Git)</span>
+                    <span class="progress-level">Intermédiaire</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 65%"></div>
+                </div>
+            </div>
+
+            <h3>🔧 Automatisme & Systèmes</h3>
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span class="progress-name">Programmation Automates</span>
+                    <span class="progress-level">Intermédiaire</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 70%"></div>
+                </div>
+            </div>
+
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span class="progress-name">Capteurs & Actionneurs</span>
+                    <span class="progress-level">Avancé</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 85%"></div>
+                </div>
+            </div>
+
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span class="progress-name">Communication SPI / I2C</span>
+                    <span class="progress-level">Avancé</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 80%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MATIÈRES MOBILISÉES -->
+        <div class="card">
+            <h2>📚 Matières Mobilisées</h2>
+            <p>Toutes les matières de ma formation BUT GEII contribuent à mes compétences :</p>
+
+            <div class="badge-group">
+                <span class="badge matiere">⚡ Électronique</span>
+                <span class="badge matiere">🔌 Électrotechnique</span>
+                <span class="badge matiere">💻 Informatique</span>
+                <span class="badge matiere">⚙️ Automatisme</span>
+                <span class="badge matiere">🔬 Physique appliquée</span>
+                <span class="badge matiere">📐 Mathématiques</span>
+                <span class="badge matiere">🌐 Anglais technique</span>
+                <span class="badge matiere">📊 PPP (Projet Personnel)</span>
+                <span class="badge matiere">💼 Communication</span>
+                <span class="badge matiere">⚡ Énergie</span>
+                <span class="badge matiere">🖥️ CAO / DAO</span>
+                <span class="badge matiere">🔧 Systèmes embarqués</span>
+            </div>
+        </div>
+
+        <!-- PROJETS ASSOCIÉS -->
+        <div class="card">
+            <h2>🏆 Compétences Développées par Projet</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Projet SAE</th>
+                        <th>Compétences Principales</th>
+                        <th>Technologies Utilisées</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Station de Pompage</strong></td>
+                        <td>C1, C2, C3</td>
+                        <td>Automates, Électrotechnique, Capteurs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Robot Suiveur de Ligne</strong></td>
+                        <td>C1, C2</td>
+                        <td>KiCad, PIC, Programmation C, Capteurs IR</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Moteur de Drone</strong></td>
+                        <td>C1, C2</td>
+                        <td>Électrotechnique, Champs magnétiques, PSIM</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Console Snake / Arkanoid</strong></td>
+                        <td>C1, C2</td>
+                        <td>KiCad, PIC, Écran TFT, SPI, Impression 3D</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- COMPÉTENCES PERSONNELLES -->
+        <div class="card">
+            <h2>🌟 Compétences Acquises en Parallèle</h2>
+            <p>Au-delà de ma formation académique, j'ai développé des compétences pratiques grâce à des projets personnels :</p>
+
+            <h3>📱 Réparation d'Électronique</h3>
+            <div class="badge-group">
+                <span class="badge skill">📱 Diagnostic smartphones</span>
+                <span class="badge skill">📺 Réparation TV (T-Con, LVDS)</span>
+                <span class="badge skill">🔬 Composants CMS</span>
+                <span class="badge skill">🔍 Analyse de logs système</span>
+            </div>
+
+            <h3>🚗 Diagnostic Automobile</h3>
+            <div class="badge-group">
+                <span class="badge skill">⚡ Circuits électriques automobiles</span>
+                <span class="badge skill">🔧 Diagnostic sans valise OBD</span>
+                <span class="badge skill">💡 Tests avec lampe témoin</span>
+                <span class="badge skill">📐 Lecture schémas techniques</span>
+            </div>
+
+            <blockquote>
+                💡 Ces expériences personnelles m'ont permis d'appliquer mes connaissances théoriques dans des situations réelles et de développer une méthodologie rigoureuse de diagnostic et de résolution de problèmes.
+            </blockquote>
+        </div>
+
+        <!-- OUTILS & LOGICIELS -->
+        <div class="card">
+            <h2>🛠️ Outils & Logiciels Maîtrisés</h2>
+
+            <h3>💻 Environnements de Développement</h3>
+            <div class="badge-group">
+                <span class="badge">MPLAB X</span>
+                <span class="badge">Visual Studio Code</span>
+                <span class="badge">Arduino IDE</span>
+                <span class="badge">PyCharm</span>
+            </div>
+
+            <h3>📐 CAO / Conception</h3>
+            <div class="badge-group">
+                <span class="badge">KiCad</span>
+                <span class="badge">SolidWorks</span>
+                <span class="badge">PSIM</span>
+                <span class="badge">Xcos / Scilab</span>
+                <span class="badge">Proteus</span>
+            </div>
+
+            <h3>🔬 Outils de Mesure</h3>
+            <div class="badge-group">
+                <span class="badge">Multimètre</span>
+                <span class="badge">Oscilloscope</span>
+                <span class="badge">Générateur de signaux</span>
+                <span class="badge">Alimentation stabilisée</span>
+                <span class="badge">Fer à souder</span>
+            </div>
+
+            <h3>📊 Documentation & Communication</h3>
+            <div class="badge-group">
+                <span class="badge">Microsoft Office</span>
+                <span class="badge">LaTeX</span>
+                <span class="badge">Markdown</span>
+                <span class="badge">Git / GitHub</span>
+            </div>
+        </div>
+
+        <!-- SOFT SKILLS -->
+        <div class="card">
+            <h2>🎯 Compétences Transversales</h2>
+
+            <div class="competence-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                <div class="competence-card">
+                    <div class="competence-header">
+                        <div class="competence-icon">🧩</div>
+                        <div class="competence-title">Résolution de Problèmes</div>
+                    </div>
+                    <p class="competence-description">
+                        Capacité à analyser des pannes complexes et trouver des solutions créatives et méthodiques.
+                    </p>
+                </div>
+
+                <div class="competence-card">
+                    <div class="competence-header">
+                        <div class="competence-icon">⏱️</div>
+                        <div class="competence-title">Gestion du Temps</div>
+                    </div>
+                    <p class="competence-description">
+                        Organisation rigoureuse pour mener plusieurs projets en parallèle et respecter les délais.
+                    </p>
+                </div>
+
+                <div class="competence-card">
+                    <div class="competence-header">
+                        <div class="competence-icon">👥</div>
+                        <div class="competence-title">Travail d'Équipe</div>
+                    </div>
+                    <p class="competence-description">
+                        Collaboration efficace en binôme ou en groupe sur des projets pluritechniques complexes.
+                    </p>
+                </div>
+
+                <div class="competence-card">
+                    <div class="competence-header">
+                        <div class="competence-icon">📚</div>
+                        <div class="competence-title">Autonomie & Curiosité</div>
+                    </div>
+                    <p class="competence-description">
+                        Apprentissage autodidacte et recherche active de solutions à travers documentations et tutoriels.
+                    </p>
+                </div>
+
+                <div class="competence-card">
+                    <div class="competence-header">
+                        <div class="competence-icon">🔍</div>
+                        <div class="competence-title">Rigueur & Précision</div>
+                    </div>
+                    <p class="competence-description">
+                        Attention aux détails dans les mesures, le câblage et la documentation technique.
+                    </p>
+                </div>
+
+                <div class="competence-card">
+                    <div class="competence-header">
+                        <div class="competence-icon">💡</div>
+                        <div class="competence-title">Créativité Technique</div>
+                    </div>
+                    <p class="competence-description">
+                        Innovation dans la conception de solutions et adaptation face aux contraintes techniques.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CERTIFICATIONS -->
+        <div class="card">
+            <h2>📜 Certifications & Habilitations</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Certification</th>
+                        <th>Niveau</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Habilitation Électrique B1V</td>
+                        <td>Certifié</td>
+                        <td>En cours</td>
+                    </tr>
+                    <tr>
+                        <td>Certification Voltaire</td>
+                        <td>En préparation</td>
+                        <td>2025</td>
+                    </tr>
+                    <tr>
+                        <td>TOEIC Anglais</td>
+                        <td>En préparation</td>
+                        <td>2025</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- BILAN -->
+        <div class="bilan">
+            <h2>💼 Vision d'Ensemble</h2>
+            
+            <p>Ma formation BUT GEII m'a permis de développer un <strong>large éventail de compétences techniques et transversales</strong> qui me préparent efficacement au monde professionnel.</p>
+            
+            <p>Les <strong>6 compétences du référentiel</strong> (Concevoir, Vérifier, Installer, Maintenir, Organiser, Communiquer) structurent mon parcours et me permettent d'aborder des projets complexes de manière méthodique.</p>
+
+            <blockquote>
+                🎯 <strong>Mon objectif :</strong> Continuer à enrichir ces compétences à travers des stages, des projets personnels et une veille technologique constante. Je souhaite devenir un technicien polyvalent capable de concevoir, réaliser et maintenir des systèmes électroniques innovants.
+            </blockquote>
+
+            <p>Les expériences personnelles (réparation d'électronique, diagnostic automobile) complètent ma formation académique en me confrontant à des <strong>problématiques réelles</strong> et en développant mon <strong>autonomie</strong> et ma <strong>capacité d'adaptation</strong>.</p>
+        </div>
+
+        <!-- ÉVOLUTION -->
+        <div class="card">
+            <h2>📈 Évolution et Perspectives</h2>
+            
+            <h3>🎯 Objectifs à Court Terme</h3>
+            <ul>
+                <li>Valider les compétences C1 à C6 du référentiel BUT</li>
+                <li>Obtenir mon habilitation électrique B2V</li>
+                <li>Réaliser un stage en entreprise de 10 semaines</li>
+                <li>Approfondir mes connaissances en systèmes embarqués IoT</li>
+            </ul>
+
+            <h3>🚀 Objectifs à Moyen Terme</h3>
+            <ul>
+                <li>Valider mon BUT GEII avec mention</li>
+                <li>Développer des projets personnels open-source</li>
+                <li>Obtenir une certification en cybersécurité des systèmes embarqués</li>
+                <li>Participer à des compétitions techniques (Concours de robotique, hackathons)</li>
+            </ul>
+
+            <h3>🌟 Vision à Long Terme</h3>
+            <ul>
+                <li>Devenir ingénieur en systèmes embarqués</li>
+                <li>Contribuer à des projets innovants dans l'industrie 4.0</li>
+                <li>Partager mes connaissances via des tutoriels et formations</li>
+                <li>Créer ma propre entreprise dans le domaine de l'électronique</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Hamburger menu
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Dropdown management
+        const navItems = document.querySelectorAll('.nav-item');
+        
+        navItems.forEach(item => {
+            const link = item.querySelector('.nav-link');
+            const dropdown = item.querySelector('.dropdown');
+            
+            if (dropdown) {
+                link.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 1024) {
+                        e.preventDefault();
+                        
+                        navItems.forEach(otherItem => {
+                            if (otherItem !== item) {
+                                otherItem.classList.remove('open');
+                            }
+                        });
+                        
+                        item.classList.toggle('open');
+                    }
+                });
+            }
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('.dropdown-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    navItems.forEach(item => item.classList.remove('open'));
+                }
+            });
+        });
+
+        // Close menu on outside click
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav') && navMenu.classList.contains('active')) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                navItems.forEach(item => item.classList.remove('open'));
+            }
+        });
+
+        // Animate progress bars on scroll
+        const progressBars = document.querySelectorAll('.progress-bar');
+        const observerOptions = {
+            threshold: 0.5
+        };
+
+        const progressObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.width = entry.target.style.width;
+                }
+            });
+        }, observerOptions);
+
+        progressBars.forEach(bar => {
+            progressObserver.observe(bar);
+        });
+    </script>
+</body>
+</html>

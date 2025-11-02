@@ -3,9 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact - Abdelhalim Zouggagh</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Contact | Portfolio GEII - Abdelhalim Zouggagh</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #0066FF;
+            --primary-dark: #0052CC;
+            --primary-light: #3385FF;
+            --secondary: #00D9FF;
+            --accent: #FFB800;
+            --dark: #0A0E27;
+            --dark-secondary: #151B35;
+            --dark-tertiary: #1F2843;
+            --gray: #8B92B0;
+            --gray-light: #C4C9E0;
+            --white: #FFFFFF;
+            --shadow-sm: 0 2px 8px rgba(0, 102, 255, 0.1);
+            --shadow-md: 0 4px 16px rgba(0, 102, 255, 0.15);
+            --shadow-lg: 0 8px 32px rgba(0, 102, 255, 0.2);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,11 +31,10 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-            color: #e0e0e0;
-            min-height: 100vh;
-            padding-top: 80px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-secondary) 100%);
+            color: var(--gray-light);
+            line-height: 1.6;
             overflow-x: hidden;
         }
 
@@ -27,17 +44,16 @@
             top: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(135deg, rgba(15, 32, 39, 0.95), rgba(44, 83, 100, 0.95));
-            backdrop-filter: blur(10px);
-            border-bottom: 2px solid rgba(0, 191, 255, 0.5);
-            box-shadow: 0 4px 20px rgba(0, 191, 255, 0.3);
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 102, 255, 0.1);
             z-index: 1000;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
 
         nav.scrolled {
-            background: rgba(15, 32, 39, 0.98);
-            box-shadow: 0 6px 30px rgba(0, 191, 255, 0.4);
+            background: rgba(10, 14, 39, 0.98);
+            box-shadow: var(--shadow-md);
         }
 
         .nav-container {
@@ -46,36 +62,29 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 2rem;
+            padding: 1.2rem 2rem;
         }
 
         .nav-logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.3rem;
             font-weight: 700;
-            color: #00bfff;
-            text-shadow: 0 0 20px rgba(0, 191, 255, 0.8);
+            color: var(--white);
+            text-decoration: none;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            text-decoration: none;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
 
         .nav-logo:hover {
-            color: #00ffff;
-            transform: scale(1.05);
+            color: var(--primary-light);
         }
 
         .nav-logo::before {
             content: '⚡';
-            font-size: 1.8rem;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.2); opacity: 0.8; }
+            font-size: 1.5rem;
+            color: var(--primary);
         }
 
         .nav-menu {
@@ -85,239 +94,193 @@
             align-items: center;
         }
 
-        .nav-menu > li {
+        .nav-item {
             position: relative;
         }
 
-        .nav-menu > li > a {
+        .nav-link {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.7rem 1.2rem;
-            color: rgba(0, 191, 255, 0.9);
+            padding: 0.6rem 1rem;
+            color: var(--gray-light);
             text-decoration: none;
             font-weight: 500;
+            font-size: 0.9rem;
             border-radius: 8px;
-            background: rgba(0, 191, 255, 0.05);
-            border: 1px solid rgba(0, 191, 255, 0.2);
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
-            white-space: nowrap;
+            transition: var(--transition);
+            position: relative;
         }
 
-        .nav-menu > li > a:hover {
-            background: rgba(0, 191, 255, 0.15);
-            color: #00ffff;
-            border-color: rgba(0, 255, 255, 0.4);
-            box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
-            transform: translateY(-2px);
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--white);
+            background: rgba(0, 102, 255, 0.1);
         }
 
-        .nav-menu > li > a.active {
-            background: rgba(0, 191, 255, 0.2);
-            color: #00ffff;
-            border-color: #00bfff;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
-        }
-
-        .dropdown-menu {
+        .nav-link::after {
+            content: '';
             position: absolute;
-            top: calc(100% + 10px);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 80%;
+            height: 2px;
+            background: var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            transform: translateX(-50%) scaleX(1);
+        }
+
+        .dropdown {
+            position: absolute;
+            top: calc(100% + 1rem);
             left: 0;
-            background: rgba(15, 32, 39, 0.98);
-            border: 2px solid rgba(0, 191, 255, 0.4);
+            min-width: 320px;
+            background: var(--dark-secondary);
+            border: 1px solid rgba(0, 102, 255, 0.2);
             border-radius: 12px;
             padding: 0.8rem;
-            min-width: 280px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 191, 255, 0.2);
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px);
-            transition: all 0.3s ease;
-            z-index: 1001;
+            transition: var(--transition);
+            box-shadow: var(--shadow-lg);
         }
 
-        .nav-menu > li:hover .dropdown-menu {
+        .nav-item:hover .dropdown {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
         }
 
-        .dropdown-category {
-            color: #00bfff;
+        .dropdown-title {
+            font-size: 0.75rem;
             font-weight: 600;
-            font-size: 0.85rem;
-            padding: 0.5rem 1rem 0.3rem;
-            margin-top: 0.5rem;
-            border-top: 1px solid rgba(0, 191, 255, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            padding: 0 0.5rem;
         }
 
-        .dropdown-category:first-child {
-            margin-top: 0;
-            border-top: none;
-        }
-
-        .dropdown-submenu {
-            margin-top: 0.3rem;
-        }
-
-        .dropdown-menu a {
+        .dropdown-link {
             display: flex;
             align-items: center;
             gap: 0.8rem;
-            padding: 0.7rem 1rem 0.7rem 2rem;
-            color: rgba(0, 191, 255, 0.8);
+            padding: 0.6rem 0.8rem;
+            color: var(--gray-light);
             text-decoration: none;
             border-radius: 6px;
-            transition: all 0.3s ease;
-            font-size: 0.88rem;
-            border-left: 3px solid transparent;
-            margin: 0.2rem 0;
+            transition: var(--transition);
+            font-size: 0.9rem;
         }
 
-        .dropdown-menu a:hover {
-            background: rgba(0, 191, 255, 0.1);
-            color: #00ffff;
-            border-left-color: #00bfff;
-            padding-left: 2.2rem;
+        .dropdown-link:hover {
+            background: rgba(0, 102, 255, 0.1);
+            color: var(--white);
+            transform: translateX(4px);
         }
 
-        .dropdown-menu a::before {
-            content: '▸';
-            color: #00bfff;
-            font-size: 1rem;
+        .dropdown-icon {
+            font-size: 1.1rem;
+        }
+
+        .has-dropdown > .nav-link::after {
+            display: none;
+        }
+
+        .dropdown-arrow {
             position: absolute;
-            left: 1rem;
+            right: 0.6rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7rem;
+            color: var(--gray);
+            transition: var(--transition);
         }
 
-        .has-dropdown > a::after {
-            content: '▾';
-            margin-left: 0.3rem;
-            transition: transform 0.3s ease;
-            font-size: 0.8rem;
-        }
-
-        .has-dropdown:hover > a::after {
-            transform: rotate(180deg);
+        .has-dropdown:hover .dropdown-arrow {
+            transform: translateY(-50%) rotate(180deg);
         }
 
         .hamburger {
             display: none;
             flex-direction: column;
-            gap: 5px;
+            gap: 4px;
             cursor: pointer;
             padding: 0.5rem;
-            background: rgba(0, 191, 255, 0.1);
-            border: 2px solid rgba(0, 191, 255, 0.3);
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            border-radius: 6px;
+            transition: var(--transition);
         }
 
         .hamburger:hover {
-            background: rgba(0, 191, 255, 0.2);
-            border-color: #00bfff;
+            background: rgba(0, 102, 255, 0.1);
         }
 
         .hamburger span {
-            width: 25px;
-            height: 3px;
-            background: #00bfff;
-            border-radius: 3px;
-            transition: all 0.3s ease;
+            width: 24px;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 2px;
+            transition: var(--transition);
         }
 
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(8px, 8px);
+        /* ===== HERO ===== */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(7px, -7px);
-        }
-
-        /* ===== CANVAS CIRCUIT ===== */
-        #circuitCanvas {
-            position: fixed;
+        .hero::before {
+            content: '';
+            position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(0, 102, 255, 0.15) 0%, transparent 60%);
             pointer-events: none;
-            opacity: 0.12;
+        }
+
+        .hero-content {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
         }
 
         /* ===== CONTAINER ===== */
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* ===== HERO SECTION ===== */
-        .contact-hero {
-            text-align: center;
-            padding: 4rem 2rem;
-            margin-bottom: 4rem;
-            background: linear-gradient(135deg, rgba(0, 191, 255, 0.08), rgba(0, 255, 255, 0.08));
-            border-radius: 20px;
-            border: 2px solid rgba(0, 191, 255, 0.3);
-            box-shadow: 0 10px 40px rgba(0, 191, 255, 0.15);
-            position: relative;
-            overflow: hidden;
-            animation: fadeInDown 0.8s ease-out;
-        }
-
-        .contact-hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 255, 255, 0.05) 0%, transparent 70%);
-            animation: rotateGlow 15s linear infinite;
-        }
-
-        @keyframes rotateGlow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .electric-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3rem;
-            background: linear-gradient(135deg, #00bfff, #00ffff, #00bfff);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            animation: gradientShift 3s ease infinite;
-            position: relative;
-            z-index: 1;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .subtitle {
-            font-size: 1.3rem;
-            color: rgba(0, 191, 255, 0.9);
-            margin: 0;
-            position: relative;
-            z-index: 1;
+            padding: 0 2rem 4rem;
         }
 
         /* ===== CONTACT GRID ===== */
@@ -325,186 +288,136 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
-            margin: 4rem 0;
+            margin-bottom: 4rem;
         }
 
         .contact-card {
-            position: relative;
-            padding: 2.5rem;
-            background: linear-gradient(135deg, rgba(15, 32, 39, 0.85), rgba(26, 35, 50, 0.85));
-            border: 2px solid rgba(0, 191, 255, 0.3);
-            border-radius: 20px;
+            background: var(--dark-secondary);
+            border: 1px solid rgba(0, 102, 255, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
             text-align: center;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: var(--transition);
+            position: relative;
             overflow: hidden;
-            backdrop-filter: blur(10px);
-            animation: fadeInUp 0.6s ease-out backwards;
         }
 
-        .contact-card:nth-child(1) { animation-delay: 0.1s; }
-        .contact-card:nth-child(2) { animation-delay: 0.2s; }
-        .contact-card:nth-child(3) { animation-delay: 0.3s; }
-        .contact-card:nth-child(4) { animation-delay: 0.4s; }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
         }
 
         .contact-card:hover {
-            transform: translateY(-12px) scale(1.02);
-            border-color: #00ffff;
-            box-shadow: 
-                0 0 40px rgba(0, 255, 255, 0.5),
-                0 15px 50px rgba(0, 0, 0, 0.4),
-                inset 0 0 30px rgba(0, 191, 255, 0.15);
+            border-color: var(--primary);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
         }
 
-        .card-icon {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            filter: drop-shadow(0 0 15px rgba(0, 191, 255, 0.7));
-            animation: float 3s ease-in-out infinite;
+        .contact-card:hover::before {
+            transform: scaleX(1);
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+        .contact-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+            transition: var(--transition);
         }
 
-        .contact-card h3 {
-            color: #00bfff;
-            font-size: 1.6rem;
+        .contact-card:hover .contact-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .contact-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--white);
             margin-bottom: 0.8rem;
-            font-weight: 600;
-            font-family: 'Orbitron', sans-serif;
         }
 
-        .contact-card p {
-            color: rgba(0, 191, 255, 0.7);
+        .contact-text {
+            color: var(--gray);
             margin-bottom: 1.5rem;
-            font-size: 1rem;
             line-height: 1.6;
         }
 
         .contact-link {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background: rgba(0, 191, 255, 0.15);
-            color: #00ffff !important;
-            border: 2px solid rgba(0, 191, 255, 0.4);
-            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 102, 255, 0.1);
+            color: var(--primary-light);
             text-decoration: none;
+            border-radius: 10px;
             font-weight: 600;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            font-size: 0.95rem;
-        }
-
-        .contact-link::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(0, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .contact-link:hover::before {
-            width: 400px;
-            height: 400px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(0, 102, 255, 0.2);
+            transition: var(--transition);
         }
 
         .contact-link:hover {
-            background: rgba(0, 255, 255, 0.25);
-            border-color: #00ffff;
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
-            transform: scale(1.05);
-        }
-
-        .card-glow {
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 255, 255, 0.15) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.6s ease;
-        }
-
-        .contact-card:hover .card-glow {
-            opacity: 1;
-            animation: rotateGlow 4s linear infinite;
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+            transform: translateY(-2px);
         }
 
         /* ===== CV SECTION ===== */
-        .cv-section-modern {
-            margin-top: 6rem;
-            padding: 3rem 0;
-            animation: fadeInUp 0.8s ease-out 0.5s backwards;
+        .cv-section {
+            margin-top: 4rem;
         }
 
-        .cv-timeline {
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .timeline {
             position: relative;
-            padding: 3rem 0;
-            margin: 3rem 0;
+            padding: 2rem 0;
         }
 
-        .cv-timeline::before {
+        .timeline::before {
             content: '';
             position: absolute;
             left: 30px;
             top: 0;
             bottom: 0;
-            width: 3px;
-            background: linear-gradient(180deg, 
-                transparent 0%,
-                #00bfff 10%,
-                #00ffff 50%,
-                #00bfff 90%,
-                transparent 100%);
-            box-shadow: 0 0 15px rgba(0, 191, 255, 0.6);
+            width: 2px;
+            background: linear-gradient(180deg, transparent 0%, var(--primary) 10%, var(--primary) 90%, transparent 100%);
         }
 
         .timeline-item {
             position: relative;
-            padding-left: 90px;
-            margin-bottom: 4rem;
-            animation: slideInLeft 0.8s ease-out backwards;
+            padding-left: 80px;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateX(-30px);
+            animation: slideIn 0.6s ease forwards;
         }
 
-        .timeline-item:nth-child(1) { animation-delay: 0.6s; }
-        .timeline-item:nth-child(2) { animation-delay: 0.7s; }
-        .timeline-item:nth-child(3) { animation-delay: 0.8s; }
+        .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+        .timeline-item:nth-child(2) { animation-delay: 0.2s; }
+        .timeline-item:nth-child(3) { animation-delay: 0.3s; }
 
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-60px);
-            }
+        @keyframes slideIn {
             to {
                 opacity: 1;
                 transform: translateX(0);
@@ -513,177 +426,110 @@
 
         .timeline-marker {
             position: absolute;
-            left: 18px;
+            left: 19px;
             top: 0;
             width: 24px;
             height: 24px;
-            background: #00ffff;
-            border: 4px solid #0f2027;
+            background: var(--primary);
+            border: 4px solid var(--dark);
             border-radius: 50%;
-            box-shadow: 
-                0 0 20px rgba(0, 255, 255, 0.9),
-                0 0 40px rgba(0, 191, 255, 0.5);
-            animation: pulseMarker 2s ease-in-out infinite;
-        }
-
-        @keyframes pulseMarker {
-            0%, 100% {
-                box-shadow: 
-                    0 0 20px rgba(0, 255, 255, 0.9),
-                    0 0 40px rgba(0, 191, 255, 0.5);
-                transform: scale(1);
-            }
-            50% {
-                box-shadow: 
-                    0 0 30px rgba(0, 255, 255, 1),
-                    0 0 60px rgba(0, 191, 255, 0.7);
-                transform: scale(1.1);
-            }
+            box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.2);
         }
 
         .timeline-content {
-            background: linear-gradient(135deg, rgba(15, 32, 39, 0.7), rgba(26, 35, 50, 0.7));
-            padding: 2.5rem;
-            border-radius: 15px;
-            border-left: 5px solid #00bfff;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
-            transition: all 0.4s ease;
-            backdrop-filter: blur(5px);
+            background: var(--dark-secondary);
+            border: 1px solid rgba(0, 102, 255, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: var(--transition);
         }
 
         .timeline-content:hover {
-            transform: translateX(15px);
-            border-left-color: #00ffff;
-            box-shadow: 
-                0 10px 40px rgba(0, 191, 255, 0.3),
-                0 0 30px rgba(0, 255, 255, 0.2);
-        }
-
-        .timeline-content h3 {
-            color: #00bfff;
-            font-size: 1.6rem;
-            margin-bottom: 0.8rem;
-            font-family: 'Orbitron', sans-serif;
+            border-color: var(--primary);
+            transform: translateX(8px);
         }
 
         .timeline-date {
             display: inline-block;
-            padding: 0.5rem 1rem;
-            background: rgba(0, 191, 255, 0.2);
-            color: #00ffff;
-            border-radius: 25px;
-            font-size: 0.9rem;
+            padding: 0.4rem 1rem;
+            background: rgba(0, 102, 255, 0.1);
+            color: var(--primary-light);
+            border-radius: 20px;
+            font-size: 0.85rem;
             font-weight: 600;
-            margin-bottom: 1.2rem;
-            border: 1px solid rgba(0, 191, 255, 0.3);
+            margin-bottom: 1rem;
         }
 
-        .timeline-content p {
-            color: rgba(255, 255, 255, 0.85);
-            line-height: 1.8;
-            margin-bottom: 1.2rem;
-            font-size: 1.05rem;
+        .timeline-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 0.8rem;
+        }
+
+        .timeline-text {
+            color: var(--gray);
+            margin-bottom: 1rem;
+            line-height: 1.7;
         }
 
         .skills-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.7rem;
-            margin-top: 1.5rem;
+            gap: 0.6rem;
+            margin-top: 1rem;
         }
 
         .skill-tag {
-            padding: 0.5rem 1.2rem;
-            background: rgba(0, 191, 255, 0.15);
-            color: #00bfff;
-            border: 1px solid rgba(0, 191, 255, 0.3);
-            border-radius: 25px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            cursor: default;
+            padding: 0.4rem 1rem;
+            background: rgba(0, 102, 255, 0.05);
+            border: 1px solid rgba(0, 102, 255, 0.2);
+            border-radius: 20px;
+            color: var(--primary-light);
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: var(--transition);
         }
 
         .skill-tag:hover {
-            background: rgba(0, 255, 255, 0.25);
-            border-color: #00ffff;
-            color: #00ffff;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+            background: rgba(0, 102, 255, 0.1);
+            border-color: var(--primary);
             transform: translateY(-2px);
         }
 
         /* ===== CV DOWNLOAD ===== */
-        .cv-download-section {
+        .cv-download {
             text-align: center;
-            margin-top: 5rem;
-            padding: 4rem 2rem;
-            background: linear-gradient(135deg, rgba(0, 191, 255, 0.08), rgba(0, 255, 255, 0.08));
-            border-radius: 20px;
-            border: 2px dashed rgba(0, 191, 255, 0.4);
-            animation: fadeInUp 0.8s ease-out 0.9s backwards;
+            margin-top: 3rem;
+            padding: 3rem;
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(0, 217, 255, 0.05));
+            border: 1px solid rgba(0, 102, 255, 0.3);
+            border-radius: 16px;
         }
 
         .cv-download-btn {
             display: inline-flex;
-            flex-direction: column;
             align-items: center;
-            gap: 0.8rem;
-            padding: 2.5rem 4rem;
-            background: linear-gradient(135deg, #00bfff, #00ffff);
-            color: #0f2027 !important;
+            gap: 1rem;
+            padding: 1.2rem 2.5rem;
+            background: var(--primary);
+            color: var(--white);
             text-decoration: none;
-            border-radius: 15px;
+            border-radius: 12px;
             font-weight: 700;
-            box-shadow: 
-                0 10px 40px rgba(0, 191, 255, 0.5),
-                inset 0 0 30px rgba(255, 255, 255, 0.2);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cv-download-btn::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transform: rotate(45deg);
-            transition: all 0.7s ease;
-        }
-
-        .cv-download-btn:hover::before {
-            left: 100%;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
         }
 
         .cv-download-btn:hover {
-            transform: translateY(-8px) scale(1.08);
-            box-shadow: 
-                0 15px 50px rgba(0, 255, 255, 0.7),
-                inset 0 0 40px rgba(255, 255, 255, 0.4);
+            background: var(--primary-dark);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
         }
 
         .btn-icon {
-            font-size: 2.5rem;
-            animation: bounce 2s ease-in-out infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-        }
-
-        .btn-text {
-            font-size: 1.4rem;
-            font-weight: 800;
-        }
-
-        .btn-subtext {
-            font-size: 1rem;
-            opacity: 0.85;
-            font-weight: 500;
+            font-size: 1.5rem;
         }
 
         /* ===== RESPONSIVE ===== */
@@ -693,35 +539,25 @@
                 top: 80px;
                 left: 0;
                 right: 0;
-                background: rgba(15, 32, 39, 0.98);
+                background: var(--dark);
                 flex-direction: column;
                 padding: 2rem;
                 gap: 1rem;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-                transform: translateY(-100%);
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.4s ease;
-                max-height: calc(100vh - 80px);
+                transform: translateX(100%);
+                transition: var(--transition);
+                height: calc(100vh - 80px);
                 overflow-y: auto;
             }
 
             .nav-menu.active {
-                transform: translateY(0);
-                opacity: 1;
-                visibility: visible;
+                transform: translateX(0);
             }
 
-            .nav-menu > li {
-                width: 100%;
+            .hamburger {
+                display: flex;
             }
 
-            .nav-menu > li > a {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .dropdown-menu {
+            .dropdown {
                 position: static;
                 opacity: 1;
                 visibility: visible;
@@ -732,20 +568,20 @@
                 transition: max-height 0.3s ease;
             }
 
-            .has-dropdown.open .dropdown-menu {
-                max-height: 800px;
+            .nav-item.open .dropdown {
+                max-height: 600px;
             }
 
-            .hamburger {
-                display: flex;
+            .timeline::before {
+                left: 20px;
             }
 
-            .electric-title {
-                font-size: 2.2rem;
+            .timeline-item {
+                padding-left: 60px;
             }
 
-            .subtitle {
-                font-size: 1.1rem;
+            .timeline-marker {
+                left: 9px;
             }
         }
 
@@ -754,52 +590,27 @@
                 padding: 1rem;
             }
 
-            .nav-logo {
-                font-size: 1.2rem;
+            .hero {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            .container {
+                padding: 0 1.5rem 3rem;
             }
 
             .contact-grid {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .electric-title {
-                font-size: 1.8rem;
-            }
-
-            .cv-timeline::before {
-                left: 20px;
-            }
-
-            .timeline-item {
-                padding-left: 70px;
-            }
-
-            .timeline-marker {
-                left: 10px;
-                width: 20px;
-                height: 20px;
-            }
-
-            .cv-download-btn {
-                padding: 2rem 2.5rem;
-            }
-
-            .btn-text {
-                font-size: 1.2rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- ===== CANVAS CIRCUIT ===== -->
-    <canvas id="circuitCanvas"></canvas>
 
     <!-- ===== NAVIGATION ===== -->
     <nav id="navbar">
         <div class="nav-container">
             <a href="index.html" class="nav-logo">
-                Portfolio GEII
+                AZ.GEII
             </a>
 
             <div class="hamburger" id="hamburger">
@@ -809,123 +620,146 @@
             </div>
 
             <ul class="nav-menu" id="navMenu">
-                <li class="has-dropdown">
-                    <a href="index.html">🏠 Accueil</a>
-                    <div class="dropdown-menu">
-                        <a href="index.html">À propos de moi</a>
-                        <a href="Somaires.html">Sommaire</a>
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Accueil</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="referenciel.html" class="nav-link">Référentiel</a>
+                </li>
+
+                <li class="nav-item has-dropdown">
+                    <a href="#" class="nav-link">
+                        Projets
+                        <span class="dropdown-arrow">▾</span>
+                    </a>
+                    <div class="dropdown">
+                        <div class="dropdown-title">📌 1ère année</div>
+                        
+                        <div class="dropdown-title" style="margin-top: 0.8rem; margin-left: 1rem; font-size: 0.7rem;">Semestre 1</div>
+                        <a href="Pompe.html" class="dropdown-link">
+                            <span class="dropdown-icon">💧</span>
+                            Station de Pompage
+                        </a>
+                        <a href="Robot_suiveur.html" class="dropdown-link">
+                            <span class="dropdown-icon">🤖</span>
+                            Robot Suiveur
+                        </a>
+
+                        <div class="dropdown-title" style="margin-top: 0.8rem; margin-left: 1rem; font-size: 0.7rem;">Semestre 2</div>
+                        <a href="sae_drone.html" class="dropdown-link">
+                            <span class="dropdown-icon">🚁</span>
+                            Moteur de Drone
+                        </a>
+                        <a href="sae_snake.html" class="dropdown-link">
+                            <span class="dropdown-icon">🎮</span>
+                            Jeu Snake
+                        </a>
+
+                        <div class="dropdown-title" style="margin-top: 1rem;">🎓 2ème année</div>
+                        <a href="#" class="dropdown-link" style="opacity: 0.5;">
+                            <span class="dropdown-icon">⏳</span>
+                            À venir
+                        </a>
                     </div>
                 </li>
 
-                <li>
-                    <a href="referenciel.html">📊 Référentiel</a>
-                </li>
-
-                <li class="has-dropdown">
-                    <a href="#">📚 Projets Académiques</a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-category">📌 Semestre 1</div>
-                        <div class="dropdown-submenu">
-                            <a href="Pompe.html">💧 Station de Pompage</a>
-                            <a href="concevoir_station_pompage.html" style="padding-left: 3rem;">→ Concevoir</a>
-                            <a href="verifier_station_pompage.html" style="padding-left: 3rem;">→ Vérifier</a>
-                            
-                            <a href="Robot_suiveur.html">🤖 Robot Suiveur</a>
-                            <a href="concevoir_robot_suiveur.html" style="padding-left: 3rem;">→ Concevoir</a>
-                            <a href="verifier_robot_suiveur.html" style="padding-left: 3rem;">→ Vérifier</a>
-                        </div>
-
-                        <div class="dropdown-category">🏅 Semestre 2</div>
-                        <div class="dropdown-submenu">
-                            <a href="sae_drone.html">🚁 Moteur de Drone</a>
-                            <a href="concevoir_moteur_drone.html" style="padding-left: 3rem;">→ Concevoir</a>
-                            <a href="verifier_moteur_drone.html" style="padding-left: 3rem;">→ Vérifier</a>
-                            
-                            <a href="sae_snake.html">🐍 Snake</a>
-                            <a href="concevoir_sae_snake.html" style="padding-left: 3rem;">→ Concevoir</a>
-                            <a href="verifier_sae_snake.html" style="padding-left: 3rem;">→ Vérifier</a>
-                        </div>
+                <li class="nav-item has-dropdown">
+                    <a href="#" class="nav-link">
+                        Expérience
+                        <span class="dropdown-arrow">▾</span>
+                    </a>
+                    <div class="dropdown">
+                        <a href="projet_realiser.html" class="dropdown-link">
+                            <span class="dropdown-icon">🏆</span>
+                            Projets Réalisés
+                        </a>
+                        <a href="competence_aquise.html" class="dropdown-link">
+                            <span class="dropdown-icon">🔧</span>
+                            Compétences Acquises
+                        </a>
                     </div>
                 </li>
 
-                <li class="has-dropdown">
-                    <a href="#">💼 Expérience</a>
-                    <div class="dropdown-menu">
-                        <a href="projet_realiser.html">🏆 Projets Réalisés</a>
-                        <a href="competence_aquise.html">🔧 Compétences Acquises</a>
-                    </div>
-                </li>
-
-                <li>
-                    <a href="contact.html" class="active">📞 Contact</a>
+                <li class="nav-item">
+                    <a href="contact.html" class="nav-link active">Contact</a>
                 </li>
             </ul>
         </div>
     </nav>
 
-    <!-- ===== CONTAINER ===== -->
-    <div class="container">
-        <!-- ===== HERO SECTION ===== -->
-        <div class="contact-hero">
-            <h2 class="electric-title">⚡ Restons en Contact</h2>
-            <p class="subtitle">N'hésitez pas à me contacter pour discuter de projets, d'opportunités ou simplement échanger !</p>
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="gradient-text">Restons en Contact</span>
+            </h1>
+            <p class="hero-subtitle">
+                N'hésitez pas à me contacter pour discuter de projets, d'opportunités ou simplement échanger !
+            </p>
         </div>
+    </section>
+
+    <!-- ===== CONTENU ===== -->
+    <div class="container">
 
         <!-- ===== CONTACT GRID ===== -->
         <div class="contact-grid">
-            <div class="contact-card email-card">
-                <div class="card-icon">📧</div>
-                <h3>Email</h3>
-                <p>Pour toute demande professionnelle ou collaboration</p>
+            <div class="contact-card">
+                <div class="contact-icon">📧</div>
+                <h3 class="contact-title">Email</h3>
+                <p class="contact-text">Pour toute demande professionnelle ou collaboration</p>
                 <a href="mailto:abdelhalim.zouggagh84@gmail.com" class="contact-link">
-                    abdelhalim.zouggagh84@gmail.com
+                    Envoyer un email
+                    <span>→</span>
                 </a>
-                <div class="card-glow"></div>
             </div>
 
-            <div class="contact-card linkedin-card">
-                <div class="card-icon">🔗</div>
-                <h3>LinkedIn</h3>
-                <p>Connectons-nous sur le réseau professionnel</p>
+            <div class="contact-card">
+                <div class="contact-icon">💼</div>
+                <h3 class="contact-title">LinkedIn</h3>
+                <p class="contact-text">Connectons-nous sur le réseau professionnel</p>
                 <a href="https://www.linkedin.com/in/abdelhalim-zouggagh-755b85352/" target="_blank" class="contact-link">
-                    Voir mon profil LinkedIn
+                    Voir mon profil
+                    <span>→</span>
                 </a>
-                <div class="card-glow"></div>
             </div>
 
-            <div class="contact-card phone-card">
-                <div class="card-icon">📱</div>
-                <h3>Téléphone</h3>
-                <p>Appelez-moi directement pour échanger</p>
+            <div class="contact-card">
+                <div class="contact-icon">📱</div>
+                <h3 class="contact-title">Téléphone</h3>
+                <p class="contact-text">Appelez-moi directement pour échanger</p>
                 <a href="tel:+33781233035" class="contact-link">
                     +33 7 81 23 30 35
+                    <span>→</span>
                 </a>
-                <div class="card-glow"></div>
             </div>
 
-            <div class="contact-card location-card">
-                <div class="card-icon">📍</div>
-                <h3>IUT de Nîmes</h3>
-                <p>Mon établissement d'études supérieures</p>
-                <a href="https://www.google.com/maps/place/IUT+de+N%C3%AEmes/@43.8077872,4.3575681,17z" target="_blank" class="contact-link">
-                    8 Rue Jules Raimu, 30900 Nîmes
+            <div class="contact-card">
+                <div class="contact-icon">📍</div>
+                <h3 class="contact-title">Localisation</h3>
+                <p class="contact-text">IUT de Nîmes - Université de Montpellier</p>
+                <a href="https://www.google.com/maps/place/IUT+de+N%C3%AEmes" target="_blank" class="contact-link">
+                    Voir sur la carte
+                    <span>→</span>
                 </a>
-                <div class="card-glow"></div>
             </div>
         </div>
 
         <!-- ===== CV SECTION ===== -->
-        <div class="cv-section-modern">
-            <h2 class="electric-title">📄 Mon Parcours</h2>
-            
-            <div class="cv-timeline">
+        <section class="cv-section">
+            <h2 class="section-title">Mon Parcours</h2>
+
+            <div class="timeline">
                 <div class="timeline-item">
                     <div class="timeline-marker"></div>
                     <div class="timeline-content">
-                        <h3>🎓 BUT Génie Électrique et Informatique Industrielle</h3>
                         <span class="timeline-date">2023 - Présent</span>
-                        <p><strong>IUT de Nîmes - Université de Montpellier</strong></p>
-                        <p>Formation complète axée sur les systèmes embarqués, l'électronique, l'automatisme et l'informatique industrielle. Réalisation de nombreux projets pratiques incluant robotique, programmation de microcontrôleurs et conception de systèmes automatisés.</p>
+                        <h3 class="timeline-title">🎓 BUT Génie Électrique et Informatique Industrielle</h3>
+                        <p class="timeline-text">
+                            <strong>IUT de Nîmes - Université de Montpellier</strong><br>
+                            Formation complète axée sur les systèmes embarqués, l'électronique, l'automatisme et l'informatique industrielle.
+                        </p>
                         <div class="skills-tags">
                             <span class="skill-tag">Électronique</span>
                             <span class="skill-tag">Automatisme</span>
@@ -938,21 +772,17 @@
                 <div class="timeline-item">
                     <div class="timeline-marker"></div>
                     <div class="timeline-content">
-                        <h3>🔬 Projets Académiques Majeurs</h3>
                         <span class="timeline-date">2023 - 2025</span>
-                        <p>Développement de plusieurs projets d'envergure :</p>
-                        <ul style="color: rgba(255, 255, 255, 0.85); line-height: 1.8; margin-left: 1.5rem; margin-top: 0.8rem;">
-                            <li>Station de pompage intelligente avec asservissement</li>
-                            <li>Robot suiveur de ligne autonome</li>
-                            <li>Commande de moteur brushless pour drone</li>
-                            <li>Jeu Snake sur carte à microcontrôleur</li>
-                        </ul>
+                        <h3 class="timeline-title">🔬 Projets Académiques Majeurs</h3>
+                        <p class="timeline-text">
+                            Développement de plusieurs projets d'envergure : station de pompage intelligente, robot suiveur de ligne, moteur brushless pour drone, jeu Snake sur microcontrôleur.
+                        </p>
                         <div class="skills-tags">
                             <span class="skill-tag">C/C++</span>
                             <span class="skill-tag">Arduino</span>
                             <span class="skill-tag">Python</span>
-                            <span class="skill-tag">MPLAB X</span>
-                            <span class="skill-tag">TIA Portal</span>
+                            <span class="skill-tag">KiCad</span>
+                            <span class="skill-tag">SolidWorks</span>
                         </div>
                     </div>
                 </div>
@@ -960,10 +790,12 @@
                 <div class="timeline-item">
                     <div class="timeline-marker"></div>
                     <div class="timeline-content">
-                        <h3>🎯 Baccalauréat Général</h3>
                         <span class="timeline-date">2020 - 2023</span>
-                        <p><strong>Spécialités : Mathématiques & Sciences Économiques et Sociales</strong></p>
-                        <p>Acquisition de solides bases en mathématiques et raisonnement logique, essentielles pour l'ingénierie et la programmation. Développement de compétences analytiques appliquées aux systèmes techniques.</p>
+                        <h3 class="timeline-title">🎯 Baccalauréat Général</h3>
+                        <p class="timeline-text">
+                            <strong>Spécialités : Mathématiques & Sciences Économiques et Sociales</strong><br>
+                            Acquisition de solides bases en mathématiques et raisonnement logique, essentielles pour l'ingénierie.
+                        </p>
                         <div class="skills-tags">
                             <span class="skill-tag">Mathématiques</span>
                             <span class="skill-tag">Logique</span>
@@ -973,89 +805,22 @@
                 </div>
             </div>
 
-            <div class="cv-download-section">
+            <!-- ===== CV DOWNLOAD ===== -->
+            <div class="cv-download">
                 <a href="cv.pdf" download class="cv-download-btn">
-                    <span class="btn-icon">⬇️</span>
-                    <span class="btn-text">Télécharger mon CV complet</span>
-                    <span class="btn-subtext">Format PDF - Mis à jour</span>
+                    <span class="btn-icon">📄</span>
+                    <span>Télécharger mon CV</span>
                 </a>
             </div>
-        </div>
+        </section>
+
     </div>
 
     <script>
-        // ===== CANVAS CIRCUIT ANIMATION =====
-        const canvas = document.getElementById("circuitCanvas");
-        const ctx = canvas.getContext("2d");
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = document.documentElement.scrollHeight;
-        }
-
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-        window.addEventListener('scroll', () => {
-            if (canvas.height < document.documentElement.scrollHeight) {
-                resizeCanvas();
-            }
-        });
-
-        const nodes = [];
-        const nodeCount = 70;
-
-        for (let i = 0; i < nodeCount; i++) {
-            nodes.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                dx: (Math.random() - 0.5) * 1,
-                dy: (Math.random() - 0.5) * 1,
-                size: Math.random() * 2.5 + 1
-            });
-        }
-
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            nodes.forEach(node => {
-                node.x += node.dx;
-                node.y += node.dy;
-                
-                if (node.x < 0 || node.x > canvas.width) node.dx *= -1;
-                if (node.y < 0 || node.y > canvas.height) node.dy *= -1;
-
-                ctx.fillStyle = "rgba(0, 191, 255, 0.9)";
-                ctx.beginPath();
-                ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
-                ctx.fill();
-                
-                ctx.shadowBlur = 15;
-                ctx.shadowColor = "rgba(0, 255, 255, 0.6)";
-                
-                nodes.forEach(other => {
-                    const dist = Math.hypot(node.x - other.x, node.y - other.y);
-                    if (dist < 180 && dist > 0) {
-                        const opacity = (1 - dist / 180) * 0.6;
-                        ctx.strokeStyle = `rgba(0, 191, 255, ${opacity})`;
-                        ctx.lineWidth = 0.8;
-                        ctx.beginPath();
-                        ctx.moveTo(node.x, node.y);
-                        ctx.lineTo(other.x, other.y);
-                        ctx.stroke();
-                    }
-                });
-                
-                ctx.shadowBlur = 0;
-            });
-            
-            requestAnimationFrame(draw);
-        }
-
-        draw();
-
         // ===== NAVIGATION SCROLL =====
+        const navbar = document.getElementById('navbar');
+
         window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
             if (window.scrollY > 50) {
                 navbar.classList.add('scrolled');
             } else {
@@ -1068,34 +833,50 @@
         const navMenu = document.getElementById('navMenu');
 
         hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
             navMenu.classList.toggle('active');
+            
+            const spans = hamburger.querySelectorAll('span');
+            if (navMenu.classList.contains('active')) {
+                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
         });
 
-        document.querySelectorAll('.nav-menu a').forEach(link => {
+        // ===== DROPDOWN MOBILE =====
+        const dropdownLinks = document.querySelectorAll('.has-dropdown > .nav-link');
+        
+        dropdownLinks.forEach(link => {
             link.addEventListener('click', (e) => {
-                const parent = link.parentElement;
-                if (parent.classList.contains('has-dropdown') && window.innerWidth <= 1024) {
+                if (window.innerWidth <= 1024) {
                     e.preventDefault();
+                    const parent = link.parentElement;
                     parent.classList.toggle('open');
-                } else if (!link.getAttribute('href').startsWith('#')) {
-                    hamburger.classList.remove('active');
-                    navMenu.classList.remove('active');
                 }
             });
         });
 
-        // ===== SMOOTH SCROLL =====
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+        // Fermer le menu en cliquant sur un lien non-dropdown
+        document.querySelectorAll('.nav-menu a:not(.has-dropdown > .nav-link)').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
+                    navMenu.classList.remove('active');
+                    const spans = hamburger.querySelectorAll('span');
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
                 }
+            });
+        });
+
+        // ===== PREVENT DROPDOWN CLOSE ON CLICK INSIDE =====
+        document.querySelectorAll('.dropdown').forEach(dropdown => {
+            dropdown.addEventListener('click', (e) => {
+                e.stopPropagation();
             });
         });
     </script>
